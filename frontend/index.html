@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="./index.css">
+    <title>Minify Client</title>
+</head>
+<body>
+    <header><h1 class="text-center page-title">Minify Client</h1></header>
+    <h2 class="text-center">Nothing Extra</h2>
+    <article class="container">
+        <div class="row main-content">
+            <div class="col input">
+                <input value="Paste code" type="text">
+                <div class="w-100"></div>
+                <span>Or</span>
+                <div class="w-100"></div>
+                <div id="files"></div>
+                <ul id="added-files"></ul>
+            </div>
+            <div class="col output">
+                <input value="Output" type="text" readonly></input>
+            </div>
+        </div>
+        <button type="button" class="btn btn-danger send">Send</button>
+        <h2 class="text-center">API</h2>
+    </article>
+
+    <script src="./index.js"></script>
+</body>
+</html>
