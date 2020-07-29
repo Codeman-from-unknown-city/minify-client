@@ -21,6 +21,9 @@ label[for="file"],
 body {
     background-color: #f2f2f2;
 }
+.main-content {
+    margin-bottom: 1em;
+}
 .input {
     text-align: center;
 }
@@ -32,6 +35,7 @@ input[type="text"] {
     height: 74px;
     width: 100%;
 }
+
 /* BEAUTIFUL BUTTON */
 #files {margin-bottom: 0.5em;}
 #files .btn-tertiary{color:#555;padding:0;line-height:40px;width:300px;margin:auto;display:block;}
@@ -44,9 +48,34 @@ input[type="text"] {
     font-size: 20px;
     width: 120px;
 }
-
 .remove-btn:hover {
     cursor: pointer;
 }
-
-
+.output-file {
+    position: relative;
+}
+.file-title {
+    margin-left: 15px;
+}
+.file-title:hover {
+    cursor: pointer;
+}
+.file-title::after {    
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 9px;
+    border: 4px solid transparent;
+    border-left: 10px solid #262936;
+}
+.output-file .file-code {
+    display: none;
+    width: 100%;
+}
+.output-file.active .file-code {
+    display: block;
+}
+.output-file.active .file-title::after {
+    border-left: 4px solid transparent;
+    border-top: 10px solid #262936;
+}

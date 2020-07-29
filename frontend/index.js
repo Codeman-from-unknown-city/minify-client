@@ -3,6 +3,7 @@ const FILES = document.getElementById('files');
 const FILES_LIST = document.getElementById('added-files');
 const CODE_INPUT = document.querySelector('input[value="Paste code"]');
 const OUTPUT = document.querySelector('.output');
+let haveFiles;
 
 const wss = new WebSocket('ws://localhost:8000');
 wss.onmessage = showResult;
@@ -96,11 +97,10 @@ function sendFiles() {
         return;
     }
 
-    if (files) {
-        files.forEach(handelFile);
-        const outputTitle = createNode('h3', null, 'Output Files:');
-        OUTPUT.append(outputTitle);
-    }
+    if (files) files.forEach(handelFile);
+
+    Array.from(OUTPUT.childNodes).forEach(node => node.tagName !== 'INPUT' ? node.remove() : null);
+    haveFiles = false;
 }
 
 function sendFile(name, ext, code) {
@@ -114,9 +114,25 @@ function sendFile(name, ext, code) {
 }
 
 function showResult(message) {
-    // const result = JSON.parse(message.data);
-    const result = message.data;
-    console.log(result);
+    if (!haveFiles) {
+        const outputTitle = createNode('h3', null, 'Output Files:');
+        OUTPUT.append(outputTitle);
+    }
+
+    haveFiles = true;
+    const { name, result } = JSON.parse(message.data);
+    const outputFile = createNode('div', 'output-file');
+    const fileTitle = createNode('span', 'file-title', name,
+        'click',
+        function() {
+            this.parentNode.classList.toggle('active')
+        }
+    );
+    const lineBreak = createNode('div', 'w-100')
+    const fileCode = createNode('input', 'file-code');
+    fileCode.value = result;
+    multiAppend(outputFile, fileTitle, lineBreak, fileCode);
+    OUTPUT.append(outputFile);
 }
 
 createFileInput();
