@@ -4,4 +4,10 @@ namespace I {
         code: string,
         name: string
     }
+
+    export interface Config {
+        host: string
+        port: string
+        noServer: boolean
+    }
 }
