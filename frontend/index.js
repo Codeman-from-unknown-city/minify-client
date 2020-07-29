@@ -103,9 +103,9 @@ function sendFiles() {
     }
 }
 
-function sendFile(fileName, ext, code) {
+function sendFile(name, ext, code) {
     const data = {
-        fileName,
+        name,
         ext,
         code
     }
