@@ -1,9 +1,10 @@
 let counter = 0;
 const FILES = document.getElementById('files');
 const FILES_LIST = document.getElementById('added-files');
-const CODE_INPUT = document.querySelector('input[value="Paste code"]');
+const CODE_INPUT = document.querySelector('input[placeholder="Paste code"]');
 const OUTPUT = document.querySelector('.output');
 let haveFiles;
+let ext = null;
 
 const wss = new WebSocket('ws://localhost:8000');
 wss.onmessage = showResult;
@@ -97,10 +98,23 @@ function sendFiles() {
         return;
     }
 
-    if (files) files.forEach(handelFile);
+    if (input && !ext) alert('Please select type of your code');
+    else if (input && ext) wss.send(
+        JSON.stringify({
+            name: 'input',
+            ext,
+            code: input
+        })
+    );
 
-    Array.from(OUTPUT.childNodes).forEach(node => node.tagName !== 'INPUT' ? node.remove() : null);
-    haveFiles = false;
+    if (files[1]) {
+        files.forEach(handelFile);
+        haveFiles = true;
+    }
+    
+    Array.from(OUTPUT.children).forEach(node => !node.classList.contains('row') ? node.remove() : null);
+    CODE_INPUT.value = '';
+    document.querySelector('input[placeholder="Output"]').value = '';
 }
 
 function sendFile(name, ext, code) {
@@ -114,18 +128,23 @@ function sendFile(name, ext, code) {
 }
 
 function showResult(message) {
-    if (!haveFiles) {
+    if (haveFiles) {
         const outputTitle = createNode('h3', null, 'Output Files:');
         OUTPUT.append(outputTitle);
     }
-
-    haveFiles = true;
+    
     const { name, result } = JSON.parse(message.data);
+    if (name === 'input') {
+        document.querySelector('input[placeholder="Output"]').value = result;
+        return;
+    }
+    
+    haveFiles = false;
     const outputFile = createNode('div', 'output-file');
     const fileTitle = createNode('span', 'file-title', name,
         'click',
         function() {
-            this.parentNode.classList.toggle('active')
+            this.parentNode.classList.toggle('active');
         }
     );
     const lineBreak = createNode('div', 'w-100')
@@ -137,3 +156,8 @@ function showResult(message) {
 
 createFileInput();
 document.querySelector('.send').addEventListener('click', handler);
+document.querySelectorAll('input[name="type"').forEach(node => 
+    node.addEventListener('change', function() {
+        ext = this.value;
+    })
+);

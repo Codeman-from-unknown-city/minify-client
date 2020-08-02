@@ -15,7 +15,14 @@
     <article class="container">
         <div class="row main-content">
             <div class="col input">
-                <input value="Paste code" type="text">
+                <div class="row">
+                    <input class="col-10" placeholder="Paste code" type="text">
+                    <form class="col file-type">
+                        <label><input name="type" type="radio" value="html">html</label>
+                        <label><input name="type" type="radio" value="css">css</label>
+                        <label><input name="type" type="radio" value="js">js</label>
+                    </form>
+                </div>
                 <div class="w-100"></div>
                 <span>Or</span>
                 <div class="w-100"></div>
@@ -23,7 +30,9 @@
                 <ul id="added-files"></ul>
             </div>
             <div class="col output">
-                <input value="Output" type="text" readonly></input>
+                <div class="row">
+                    <input placeholder="Output" type="text" readonly></input>
+                </div>
             </div>
         </div>
         <button type="button" class="btn btn-danger send">Send</button>
