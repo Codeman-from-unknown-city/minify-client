@@ -1,6 +1,6 @@
 const WEBSOCKET_SERVER = require('ws').Server;
-import { serverConfig } from "./utils/server/serverConfig";
-import { handleConnection as connectionHandler }from "./utils/server/handleConnection"
+import { serverConfig } from "./utils/ws-server/serverConfig";
+import { handleConnection as connectionHandler }from "./utils/ws-server/handleConnection"
 
 new WEBSOCKET_SERVER(serverConfig)
 .on('connection', connectionHandler)
