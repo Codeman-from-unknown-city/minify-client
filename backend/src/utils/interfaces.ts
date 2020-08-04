@@ -10,4 +10,11 @@ namespace I {
         port: string
         noServer: boolean
     }
+
+    export interface Cash {
+        writeCash(cash?: any): Promise<any>
+        getCash(): any
+        addDir(dirPath: string): void
+        addFile(filePath: string): void
+    }
 }
