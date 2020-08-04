@@ -14,11 +14,11 @@ class Cash extends Map {
         switch(ext) {
             case 'png':
             case 'jpg':
-                fs.readFile(path, callback);
+                fs.readFile(filePath, callback);
                 break;
     
             default:
-                fs.readFile(path, 'utf8', callback); 
+                fs.readFile(filePath, 'utf8', callback); 
         }
     
         return fileContent;
