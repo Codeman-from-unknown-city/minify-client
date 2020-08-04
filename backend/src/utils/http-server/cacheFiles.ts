@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 class Cash extends Map {
-    addFile(filePath: string): string {
+    addFile(filePath: string, fileName: string, dirName: string): void {
         const ext: string = path.extname(filePath).substring(1);
         let fileContent: string = '\0';
         const callback = (err: Error, result: string): void => {
@@ -21,24 +21,24 @@ class Cash extends Map {
                 fs.readFile(filePath, 'utf8', callback); 
         }
     
-        return fileContent;
+        super.get(dirName)[fileName] = fileContent;
     }
 
-    addDirectory(directoryPath: string, name: string, isNested: boolean = false): void {
+    addDirectory(directoryPath: string, isNested: boolean = false): void {
         fs.readdir(directoryPath,
         {encoding: null, withFileTypes: true}, 
         (err: Error, files: any) => {
             if (err) throw err;
             
-            if (!isNested) super.set(name, {});
+            const propName = directoryPath.split('/')[directoryPath.length - 1];
+            if (!isNested) super.set(propName, {});
 
             for (let file of files) {
-                const filePath: string = path.join(directoryPath, file.name);
+                const fileName = file.name;
+                const filePath: string = path.join(directoryPath, fileName);
 
-                if (file.isDirectory()) this.addDirectory(filePath, name, true);
-
-                const fileContent = this.addFile(filePath);
-                super.get(name)[file.name] = fileContent;
+                if (file.isDirectory()) this.addDirectory(filePath, true);
+                else this.addFile(filePath, fileName, propName);
             }
         });
     }
