@@ -1,6 +1,6 @@
 import { cash } from "./cacheFiles";
 import { ServerResponse } from "http";
-import sendChunck from "./sendChunck";
+import sendChunck from "./../functions/sendChunck";
 
 export const routing: { [index: string]: any} = {
     '/': (res: ServerResponse, url: string) => {

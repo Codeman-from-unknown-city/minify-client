@@ -8,6 +8,5 @@ namespace I {
     export interface Config {
         host: string
         port: string
-        noServer: boolean
     }
 }
