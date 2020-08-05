@@ -1,7 +1,7 @@
-import { cash } from "./cacheFiles";
-import { routing } from "./routing";
+import { cash } from "./objects/cacheFiles";
+import { routing } from "./objects/routing";
 import { IncomingMessage, ServerResponse } from "http";
-import sendChunck from "./sendChunck";
+import sendChunck from "./functions/sendChunck";
 
 const STATIC_PATH: string = `${process.cwd}/static`;
 
@@ -21,6 +21,4 @@ export function httpHandler(req: IncomingMessage, res: ServerResponse): void {
             return;
         }
     }
-
-
 }
