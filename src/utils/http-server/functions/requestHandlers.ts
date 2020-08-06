@@ -1,14 +1,12 @@
 import { IncomingMessage, ServerResponse } from "http";
 import { cash } from "../objects/cacheFiles";
 import sendChunck from "./sendChunck";
-import { join } from "path"
-
-const STATIC_PATH: string = join(process.cwd(), 'static');
-
-cash.addDirectory(STATIC_PATH);
+import { join } from "path";
 
 function handleGet(res: ServerResponse, url: string | undefined): void {
     if (url) {
+        const STATIC_PATH: string = join(process.cwd(), 'static');
+
         if (url === '/') {
             const indexPath: string = join(STATIC_PATH, 'index.html');
             const index: string | Buffer = cash.get(indexPath);

@@ -7,10 +7,9 @@ exports.handlePost = exports.handleGet = void 0;
 const cacheFiles_1 = require("../objects/cacheFiles");
 const sendChunck_1 = __importDefault(require("./sendChunck"));
 const path_1 = require("path");
-const STATIC_PATH = path_1.join(process.cwd(), 'static');
-cacheFiles_1.cash.addDirectory(STATIC_PATH);
 function handleGet(res, url) {
     if (url) {
+        const STATIC_PATH = path_1.join(process.cwd(), 'static');
         if (url === '/') {
             const indexPath = path_1.join(STATIC_PATH, 'index.html');
             const index = cacheFiles_1.cash.get(indexPath);
