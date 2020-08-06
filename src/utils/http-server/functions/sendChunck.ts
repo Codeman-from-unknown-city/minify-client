@@ -1,11 +1,11 @@
-import { extname, basename } from "path";
+import { extname } from "path";
 import { MIME_TYPES } from "./../objects/mimeTypes";
 import { ServerResponse } from "http";
 import minify from "../../minifyCode";
 
 export default function sendChunck(res: ServerResponse, path: string, chunck: string | Buffer): void {
     const ext: string = extname(path).substring(1);
-    const compressedChunk = minify( {code: chunck.toString(), ext, name: basename(path)} );
+    const compressedChunk = minify( {code: chunck.toString(), ext, name: ''} );
 
     res
       .writeHead(200, 'ok', {

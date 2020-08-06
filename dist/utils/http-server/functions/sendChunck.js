@@ -8,7 +8,7 @@ const mimeTypes_1 = require("./../objects/mimeTypes");
 const minifyCode_1 = __importDefault(require("../../minifyCode"));
 function sendChunck(res, path, chunck) {
     const ext = path_1.extname(path).substring(1);
-    const compressedChunk = minifyCode_1.default({ code: chunck.toString(), ext, name: path_1.basename(path) });
+    const compressedChunk = minifyCode_1.default({ code: chunck.toString(), ext, name: '' });
     res
         .writeHead(200, 'ok', {
         'Content-Length': compressedChunk.length,
