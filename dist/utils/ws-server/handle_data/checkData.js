@@ -10,7 +10,7 @@ function isJSON(str) {
     return true;
 }
 function isValidData(data) {
-    const IData = { ext: '', code: '', name: '' };
+    const IData = { ext: '', code: '', };
     if (!isJSON(data))
         return false;
     data = JSON.parse(data);
