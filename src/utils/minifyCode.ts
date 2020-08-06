@@ -11,6 +11,7 @@ const minifyCss = (code: string): string => code
 
 function minifyJs(code: string): string {
     const result = UGLIFY.minify(code).code;
+    
     return result ? result : 'Sorry, this minifier does not support your code';
 }
 
