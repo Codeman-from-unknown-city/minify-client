@@ -3,9 +3,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.handelPost = exports.handleGet = void 0;
+exports.handlePost = exports.handleGet = void 0;
 const cacheFiles_1 = require("../objects/cacheFiles");
-const sendChunck_1 = __importDefault(require("../functions/sendChunck"));
+const sendChunck_1 = __importDefault(require("./sendChunck"));
 const path_1 = require("path");
 const STATIC_PATH = path_1.join(process.cwd(), 'static');
 cacheFiles_1.cash.addDirectory(STATIC_PATH);
@@ -26,7 +26,7 @@ function handleGet(res, url) {
     }
 }
 exports.handleGet = handleGet;
-function handelPost(req, res) {
+function handlePost(req, res) {
     let body = '';
     req.on('data', (chunk) => {
         body += chunk.toString();
@@ -36,4 +36,4 @@ function handelPost(req, res) {
         res.end();
     });
 }
-exports.handelPost = handelPost;
+exports.handlePost = handlePost;

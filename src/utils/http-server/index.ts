@@ -1,5 +1,4 @@
-import handelGet from "./functions/get";
-import handelPost from "./functions/post";
+import { handlePost, handleGet } from "./functions/requestHandlers";
 import { IncomingMessage, ServerResponse } from "http";
 
 export default function httpHandler(req: IncomingMessage, res: ServerResponse): void {
@@ -7,11 +6,11 @@ export default function httpHandler(req: IncomingMessage, res: ServerResponse): 
 
     switch(method) {
         case 'GET':
-            handelGet(res, url);
+            handleGet(res, url);
             break;
 
         case 'POST':
-            handelPost(req, res);
+            handlePost(req, res);
             break;
 
         default:

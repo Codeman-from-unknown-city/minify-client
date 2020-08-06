@@ -1,13 +1,13 @@
-import { ServerResponse } from "http";
+import { IncomingMessage, ServerResponse } from "http";
 import { cash } from "../objects/cacheFiles";
-import sendChunck from "../functions/sendChunck";
+import sendChunck from "./sendChunck";
 import { join } from "path"
 
 const STATIC_PATH: string = join(process.cwd(), 'static');
 
 cash.addDirectory(STATIC_PATH);
 
-export default function handleGet(res: ServerResponse, url: string | undefined): void {
+function handleGet(res: ServerResponse, url: string | undefined): void {
     if (url) {
         if (url === '/') {
             const indexPath: string = join(STATIC_PATH, 'index.html');
@@ -24,3 +24,19 @@ export default function handleGet(res: ServerResponse, url: string | undefined):
         return;
     }
 }
+
+function handlePost(req: IncomingMessage, res: ServerResponse): void {
+    let body: string = '';
+
+    req.on('data', (chunk: any): void => {
+        body += chunk.toString();
+    });
+
+    req.on('end', (): void => {
+        console.log(body);
+
+        res.end();
+    })
+}
+
+export { handleGet, handlePost };

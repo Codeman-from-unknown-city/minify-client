@@ -1,18 +1,14 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const get_1 = __importDefault(require("./functions/get"));
-const post_1 = __importDefault(require("./functions/post"));
+const requestHandlers_1 = require("./functions/requestHandlers");
 function httpHandler(req, res) {
     const { url, method } = req;
     switch (method) {
         case 'GET':
-            get_1.default(res, url);
+            requestHandlers_1.handleGet(res, url);
             break;
         case 'POST':
-            post_1.default(req, res);
+            requestHandlers_1.handlePost(req, res);
             break;
         default:
             res.writeHead(405, 'Method Not Allowed').end();
