@@ -10,6 +10,7 @@
     const wss = new WebSocket('ws://localhost:8000');
     wss.onmessage = showResult;
     
+    // UTILS
     const multiAppend = (parent, ...children) => children.forEach(child => parent.append(child));
     
     function createNode(tag, className, inside, ...events) {
