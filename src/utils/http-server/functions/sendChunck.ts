@@ -3,9 +3,9 @@ import { MIME_TYPES } from "./../objects/mimeTypes";
 import { ServerResponse } from "http";
 import minify from "../../minifyCode";
 
-export default function sendChunck(res: ServerResponse, path: string, chunck: string | Buffer): void {
+export default function sendChunk(res: ServerResponse, path: string, chunk: string | Buffer): void {
     const ext: string = extname(path).substring(1);
-    const compressedChunk: string = minify( {code: chunck.toString(), ext} );
+    const compressedChunk: string = minify( {code: chunk.toString(), ext} );
 
     res
       .writeHead(200, 'ok', {

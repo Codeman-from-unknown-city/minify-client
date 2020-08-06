@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const mimeTypes_1 = require("./../objects/mimeTypes");
 const minifyCode_1 = __importDefault(require("../../minifyCode"));
-function sendChunck(res, path, chunck) {
+function sendChunk(res, path, chunk) {
     const ext = path_1.extname(path).substring(1);
-    const compressedChunk = minifyCode_1.default({ code: chunck.toString(), ext });
+    const compressedChunk = minifyCode_1.default({ code: chunk.toString(), ext });
     res
         .writeHead(200, 'ok', {
         'Content-Length': compressedChunk.length,
@@ -16,4 +16,4 @@ function sendChunck(res, path, chunck) {
     })
         .end(compressedChunk);
 }
-exports.default = sendChunck;
+exports.default = sendChunk;
