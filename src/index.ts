@@ -1,4 +1,4 @@
-const WEBSOCKET_SERVER = require('ws').Server;
+import { Server as WEBSOCKET_SERVER } from "ws";
 import { createServer } from "http";
 import { httpOptions } from "./utils/http-server/objects/serverConfig";
 import { handleConnection as connectionHandler }from "./utils/ws-server/handleConnection";

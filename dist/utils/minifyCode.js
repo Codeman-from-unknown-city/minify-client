@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const UGLIFY = require('uglify-es');
+const uglify_es_1 = require("uglify-es");
 const minifyCss = (code) => code
     .replace(/}\s+(.)/g, '}$1')
     .replace(/{\s+(.)/g, '{$1')
@@ -8,7 +8,7 @@ const minifyCss = (code) => code
     .replace(/(\w)\s+([{>])/g, '$1$2')
     .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
 function minifyJs(code) {
-    const result = UGLIFY.minify(code).code;
+    const result = uglify_es_1.minify(code).code;
     return result ? result : 'Sorry, this minifier does not support your code';
 }
 function minifyHtml(code) {

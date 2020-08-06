@@ -1,6 +1,6 @@
 /// <reference path="./interfaces.ts" />
 
-const UGLIFY = require('uglify-es');
+import { minify as uglifyMinify } from "uglify-es";
 
 const minifyCss = (code: string): string => code
     .replace(/}\s+(.)/g, '}$1')
@@ -10,7 +10,7 @@ const minifyCss = (code: string): string => code
     .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
 
 function minifyJs(code: string): string {
-    const result = UGLIFY.minify(code).code;
+    const result = uglifyMinify(code).code;
     
     return result ? result : 'Sorry, this minifier does not support your code';
 }

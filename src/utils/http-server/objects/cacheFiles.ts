@@ -1,10 +1,10 @@
-const fs = require('fs');
-const path = require('path');
+import { readdir, readFile, Dirent } from "fs";
+import { join, extname } from "path";
 
 class Cash extends Map {
     addFile(filePath: string): void {
-        const ext: string = path.extname(filePath).substring(1);
-        const callback = (err: Error, fileContent: string): void => {
+        const ext: string = extname(filePath).substring(1);
+        const callback = (err: NodeJS.ErrnoException | null, fileContent: string | Buffer): void => {
             if (err) throw err;
 
             super.set(filePath, fileContent);
@@ -14,22 +14,22 @@ class Cash extends Map {
             case 'html':
             case 'css':
             case 'js':
-                fs.readFile(filePath, 'utf8', callback); 
+                readFile(filePath, 'utf8', callback); 
                 break;
     
             default:
-                fs.readFile(filePath, callback);
+                readFile(filePath, callback);
         }
     }
 
     addDirectory(directoryPath: string): void {
-        fs.readdir(directoryPath,
+        readdir(directoryPath,
         {encoding: null, withFileTypes: true}, 
-        (err: Error, files: any) => {
+        (err: NodeJS.ErrnoException | null, files: Dirent[]) => {
             if (err) throw err;
 
             for (let file of files) {
-                const filePath: string = path.join(directoryPath, file.name);
+                const filePath: string = join(directoryPath, file.name);
 
                 if (file.isDirectory()) this.addDirectory(filePath);
                 else this.addFile(filePath);
