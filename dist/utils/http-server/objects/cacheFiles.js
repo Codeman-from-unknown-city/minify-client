@@ -35,5 +35,4 @@ class Cash extends Map {
         });
     }
 }
-const cash = new Cash();
-exports.cash = cash;
+exports.cash = new Cash();
