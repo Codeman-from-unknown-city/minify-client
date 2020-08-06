@@ -2,7 +2,7 @@ import { Server as WEBSOCKET_SERVER } from "ws";
 import { createServer } from "http";
 import { httpOptions } from "./utils/http-server/objects/serverConfig";
 import { handleConnection as connectionHandler }from "./utils/ws-server/handleConnection";
-import { cash } from "./utils/http-server/objects/cacheFiles";
+import { cash } from "./utils/http-server/objects/cash";
 import { join } from "path"
 import httpHandler from "./utils/http-server/index";
 

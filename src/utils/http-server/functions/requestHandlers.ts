@@ -1,5 +1,5 @@
 import { IncomingMessage, ServerResponse } from "http";
-import { cash } from "../objects/cacheFiles";
+import { cash } from "../objects/cash";
 import sendChunck from "./sendChunck";
 import { join } from "path";
 
