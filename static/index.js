@@ -30,7 +30,7 @@ function createNode(tag, className, inside, ...events) {
 function createFileInput() {
     const id = counter.toString();
     const FILEHTML = `
-    <div class= form-group">
+    <div class= form-group>
         <input data-file-id="${id}" type="file" name="file" id="file" class="input-file">
         <label for="file" class="btn btn-tertiary">
             <span class="upload">Upload file</span>
