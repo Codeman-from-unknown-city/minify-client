@@ -11,7 +11,7 @@ export default function httpHandler(req: IncomingMessage, res: ServerResponse): 
             break;
 
         case 'POST':
-            handelPost(req);
+            handelPost(req, res);
             break;
 
         default:

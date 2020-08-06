@@ -12,7 +12,7 @@ function httpHandler(req, res) {
             get_1.default(res, url);
             break;
         case 'POST':
-            post_1.default(req);
+            post_1.default(req, res);
             break;
         default:
             res.writeHead(405, 'Method Not Allowed').end();
