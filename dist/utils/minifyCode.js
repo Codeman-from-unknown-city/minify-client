@@ -2,8 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const UGLIFY = require('uglify-es');
 const minifyCss = (code) => code
+    .replace(/}\s+(.)/g, '}$1')
+    .replace(/{\s+(.)/g, '{$1')
     .replace(/(\W)\s+(.)/g, '$1$2')
-    .replace(/(\w)\s+(\W)/g, '$1$2');
+    .replace(/(\w)\s+([{>])/g, '$1$2')
+    .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
 function minifyJs(code) {
     const result = UGLIFY.minify(code).code;
     return result ? result : 'Sorry, this minifier does not support your code';
@@ -18,7 +21,7 @@ function minifyHtml(code) {
         code = code.replace(cssTemplate, replaceInnerHtml);
     if (code.match(jsTemplate))
         code = code.replace(jsTemplate, replaceInnerHtml);
-    return code;
+    return code.replace(/<!--(?:(?!-->).)*-->/g, '');
 }
 function replaceInnerHtml(match, tag, code) {
     let result = tag === 'style' ? minifyCss(code) : minifyJs(code);
