@@ -3,7 +3,7 @@ import { cash } from "../objects/cacheFiles";
 import sendChunck from "../functions/sendChunck";
 import { join } from "path"
 
-const STATIC_PATH = join(process.cwd(), 'static');
+const STATIC_PATH: string = join(process.cwd(), 'static');
 
 cash.addDirectory(STATIC_PATH);
 
