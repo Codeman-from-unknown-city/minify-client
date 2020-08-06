@@ -5,7 +5,7 @@ import minify from "../../minifyCode";
 
 export default function sendChunck(res: ServerResponse, path: string, chunck: string | Buffer): void {
     const ext: string = extname(path).substring(1);
-    const compressedChunk: string = minify( {code: chunck.toString(), ext, name: ''} );
+    const compressedChunk: string = minify( {code: chunck.toString(), ext} );
 
     res
       .writeHead(200, 'ok', {
