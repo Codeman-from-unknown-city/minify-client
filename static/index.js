@@ -89,7 +89,7 @@
         const checkbox = document.querySelector('input[type="radio"]:checked');
         const extOfcodeFromTextInput = checkbox ? checkbox.value : undefined;
 
-        if ( !checkInputs(files, codeFromTextInput) ) return;
+        if ( !checkInputs(files, codeFromTextInput, extOfcodeFromTextInput) ) return;
 
         const result = {
             outputText: null,
