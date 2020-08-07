@@ -29,6 +29,7 @@
         return node;
     }
     
+    //ADD FILE LOGIC
     function createFileInput() {
         const id = counter.toString();
         const FILEHTML = `
