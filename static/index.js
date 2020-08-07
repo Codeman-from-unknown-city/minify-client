@@ -64,10 +64,16 @@
         createFileInput();
     }
     
-    // SEND FILES LOGIC
-    function sendLogic(event) {
+    // APPLICATION LOGIC
+    async function appLogic(event) {
         event.preventDefault();
 
+        const result = await sendLogic();
+        showResult(result);
+    }
+
+    // SEND FILES LOGIC
+    async function sendLogic() {
         const files= document.querySelectorAll('.input-file');
         const codeFromTextInput = CODE_INPUT.value;
 
@@ -168,7 +174,7 @@
     
     // START APPLICATION
     createFileInput();
-    document.querySelector('.send').addEventListener('click', sendLogic);
+    document.querySelector('.send').addEventListener('click', appLogic);
     document.querySelectorAll('input[name="type"').forEach(node => 
         node.addEventListener('change', function() {
             ext = this.value;
