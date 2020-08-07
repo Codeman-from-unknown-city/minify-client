@@ -67,65 +67,78 @@
         createFileInput();
     }
     
-    async function handelFile(input) {
-        const file = input.files[0];
-    
-        if (file) {
-            const partsOfName = file.name.split('.');
-            const ext = partsOfName[partsOfName.length - 1];
-            const code = await file.text();
-            sendFile(file.name, ext, code);
-        }
-    }
-    
-    function handler(event) {
+    // SEND FILES LOGIC
+    function sendLogic(event) {
         event.preventDefault();
-    
-        sendFiles();
-    
-        FILES.innerHTML = '';
-        FILES_LIST.innerHTML = '';
-    
-        createFileInput();
-    }
-    
-    function sendFiles() {
-        const files = document.querySelectorAll('.input-file');
-        const input = CODE_INPUT.value;
-    
-        //in files will be at least one elem all times
-        if (input === '' && !files[1]) {
-            alert('Please upload file or paste your code');
-            return;
-        }
-    
-        if (input && !ext) alert('Please select type of your code');
-        else if (input && ext) wss.send(
-            JSON.stringify({
-                name: 'input',
-                ext,
-                code: input
-            })
-        );
+
+        const files= document.querySelectorAll('.input-file');
+        const codeFromTextInput = CODE_INPUT.value;
+
+        if ( !checkInputs(files, codeFromTextInput) ) return;
+
+        const result = {
+            outputText: null,
+            linksToFiles: [],
+        };
+
+        if (codeFromTextInput && ext) result.outputText = await postData(codeFromTextInput, ext);
     
         if (files[1]) {
-            files.forEach(handelFile);
+            for (let i = 1; i < files.length; i++) result.linksToFiles.append( await sendFile(files[i]) );
             haveFiles = true;
         }
-        
-        Array.from(OUTPUT.children).forEach(node => !node.classList.contains('row') ? node.remove() : null);
-        CODE_INPUT.value = '';
-        document.querySelector('input[placeholder="Output"]').value = '';
+
+        clearPage(codeFromTextInput);
+        createFileInput();
+
+        return result;
     }
-    
-    function sendFile(name, ext, code) {
-        const data = {
-            name,
-            ext,
-            code
+
+    function checkInputs(files, codeInTextInput) {
+        // in files will be at least one elem all times
+        if (codeInTextInput === '' && !files[1]) {
+            alert('Please upload file or paste your code');
+            return false;
+        } else if (codeInTextInput && !ext) {
+            alert('Please select type of your code');
+            return false;
         }
-    
-        wss.send(JSON.stringify(data));
+
+        return true;
+    }
+
+    async function sendFile(input) {
+        const file = input.files[0];
+        const partsOfName = file.name.split('.');
+        const ext = partsOfName[partsOfName.length - 1];
+        const code = await file.text();  
+        
+        return await postData(code, ext, file.name);
+    }
+
+    async function postData(code, ext, name) {
+        const data = name ? {code, ext, name} : {code, ext};
+
+        try {
+            return await fetch(
+                '/', 
+                {
+                    method: 'POST',
+                    headers:{'Content-Type': 'application/json'},
+                    body: JSON.stringify(data),
+                }
+            );
+        } catch(e){
+            return 'Sorry, there was an error on the server, please try again later';
+        }        
+    }
+
+    function clearPage() {
+        Array.from(OUTPUT.children).forEach(node => !node.classList.contains('row') ? node.remove() : null);
+        document.querySelector('input[placeholder="Output"]').value = '';
+        CODE_INPUT.value = '';
+        FILES.innerHTML = '';
+        FILES_LIST.innerHTML = '';
     }
     
     function showResult(message) {
@@ -156,7 +169,7 @@
     }
     
     createFileInput();
-    document.querySelector('.send').addEventListener('click', handler);
+    document.querySelector('.send').addEventListener('click', sendLogic);
     document.querySelectorAll('input[name="type"').forEach(node => 
         node.addEventListener('change', function() {
             ext = this.value;
