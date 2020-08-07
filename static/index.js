@@ -94,12 +94,12 @@
         return result;
     }
 
-    function checkInputs(files, codeInTextInput) {
+    function checkInputs(files, codeFromTextInput) {
         // in files will be at least one elem all times
-        if (codeInTextInput === '' && !files[1]) {
+        if (codeFromTextInput === '' && !files[1]) {
             alert('Please upload file or paste your code');
             return false;
-        } else if (codeInTextInput && !ext) {
+        } else if (codeFromTextInput && !ext) {
             alert('Please select type of your code');
             return false;
         }
