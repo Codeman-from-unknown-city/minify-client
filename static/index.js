@@ -50,8 +50,8 @@
     function addFile() {
         const fileName = this.files[0].name;
 
-        const parent = this.parentNode;
-        parent.style.display = 'none';
+        const form = this.parentNode;
+        form.style.display = 'none';
     
         const file = createNode('li', 'file');
         multiAppend(
@@ -59,7 +59,7 @@
             createNode('span', 'file-name', fileName),
             createNode('span', 'remove-btn', '\t&#10008;', 'click', function() {
                 this.parentNode.remove();
-                parent.remove();
+                form.remove();
             })
         );
         FILES_LIST.append(file);
