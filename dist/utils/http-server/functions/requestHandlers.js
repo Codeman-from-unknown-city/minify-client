@@ -4,7 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.handlePost = exports.handleGet = void 0;
-const cash_1 = require("../objects/cash");
+const cash_1 = require("../../cash");
 const sendChunck_1 = __importDefault(require("./sendChunck"));
 const path_1 = require("path");
 function handleGet(res, url) {
