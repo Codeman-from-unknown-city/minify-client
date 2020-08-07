@@ -107,7 +107,7 @@
 
     function checkInputs(files, code, ext) {
         // in files will be at least one elem all times
-        if (codeFromTextInput === '' && !files[1]) {
+        if (code === '' && !files[1]) {
             alert('Please upload file or paste your code');
             return false;
         } else if (code && !ext) {
