@@ -69,7 +69,7 @@
         event.preventDefault();
 
         const result = await sendLogic();
-        showResult(result);
+        if (result !== undefined) showResult(result);
     }
 
     // SEND FILES LOGIC
