@@ -101,7 +101,7 @@
             extOfcodeFromTextInput
             );
     
-        if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.append(await sendFile(files[i]));
+        if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.push(await sendFile(files[i]));
 
         return result;
     }
