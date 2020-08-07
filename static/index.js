@@ -1,5 +1,4 @@
 (function main() {
-    let counter = 0;
     const FILES = document.getElementById('files');
     const FILES_LIST = document.getElementById('added-files');
     const CODE_INPUT = document.querySelector('input[placeholder="Paste code"]');
@@ -31,19 +30,21 @@
     
     //ADD FILE LOGIC
     function createFileInput() {
-        const id = counter.toString();
-        const FILEHTML = `
+        const fileHTML = `
         <div class="form-group">
-            <input data-file-id="${id}" type="file" name="file" id="file" class="input-file">
+            <input type="file" name="file" id="file" class="input-file">
             <label for="file" class="btn btn-tertiary">
                 <span class="upload">Upload file</span>
             </label>
         </div>
         `;
     
-        FILES.insertAdjacentHTML('afterbegin', FILEHTML);
-        document.querySelector(`input[data-file-id="${id}"]`).addEventListener('change', addFile);
-        counter++;
+        FILES.insertAdjacentHTML('afterbegin', fileHTML);
+
+        const form = FILES.firstElementChild;
+        const input = form.firstElementChild;
+
+        input.addEventListener('change', addFile);
     };
     
     function addFile() {
