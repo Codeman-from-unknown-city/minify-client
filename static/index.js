@@ -3,7 +3,6 @@
     const FILES_LIST = document.getElementById('added-files');
     const CODE_INPUT = document.querySelector('input[placeholder="Paste code"]');
     const OUTPUT = document.querySelector('.output');
-    let ext = null;
     
     // UTILS
     const multiAppend = (parent, ...children) => children.forEach(child => parent.append(child));
@@ -87,6 +86,7 @@
     async function sendLogic() {
         const files= document.querySelectorAll('.input-file');
         const codeFromTextInput = CODE_INPUT.value;
+        const extOfcodeFromTextInput = document.querySelector('input[type="radio"]:checked');
 
         if ( !checkInputs(files, codeFromTextInput) ) return;
 
@@ -95,22 +95,22 @@
             linksToFiles: [],
         };
 
-        if (codeFromTextInput && ext) result.outputText = await postData(codeFromTextInput, ext);
+        if (codeFromTextInput && extOfcodeFromTextInput) result.outputText = await postData(
+            codeFromTextInput, 
+            extOfcodeFromTextInput
+            );
     
-        if (files[1]) {
-            for (let i = 1; i < files.length; i++) result.linksToFiles.append( await sendFile(files[i]) );
-            haveFiles = true;
-        }
+        if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.append(await sendFile(files[i]));
 
         return result;
     }
 
-    function checkInputs(files, codeFromTextInput) {
+    function checkInputs(files, codeFromTextInput, extOfcodeFromTextInput) {
         // in files will be at least one elem all times
         if (codeFromTextInput === '' && !files[1]) {
             alert('Please upload file or paste your code');
             return false;
-        } else if (codeFromTextInput && !ext) {
+        } else if (codeFromTextInput && !extOfcodeFromTextInput) {
             alert('Please select type of your code');
             return false;
         }
@@ -163,9 +163,4 @@
     // START APPLICATION
     createFileInput();
     document.querySelector('.send').addEventListener('click', appLogic);
-    document.querySelectorAll('input[name="type"').forEach(node => 
-        node.addEventListener('change', function() {
-            ext = this.value;
-        })
-    );
 })();
