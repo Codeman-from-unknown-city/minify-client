@@ -132,7 +132,7 @@
         const data = name ? {code, ext, name} : {code, ext};
 
         try {
-            return await fetch(
+            const response = await fetch(
                 '/', 
                 {
                     method: 'POST',
@@ -140,6 +140,8 @@
                     body: JSON.stringify(data),
                 }
             );
+
+            return await response.text();
         } catch(e){
             return 'Sorry, there was an error on the server, please try again later';
         }        
