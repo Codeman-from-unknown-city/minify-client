@@ -26,7 +26,7 @@ function handleGet(res: ServerResponse, url: string | undefined): void {
 function handlePost(req: IncomingMessage, res: ServerResponse): void {
     let body: string = '';
 
-    req.on('data', (chunk: any): void => {
+    req.on('data', (chunk: Buffer): void => {
         body += chunk.toString();
     });
 
