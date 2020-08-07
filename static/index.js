@@ -69,7 +69,19 @@
         event.preventDefault();
 
         const result = await sendLogic();
-        if (result !== undefined) showResult(result);
+        if (result !== undefined) return;
+
+        clearPage();
+        createFileInput();
+        showResult(result);
+    }
+
+    function clearPage() {
+        Array.from(OUTPUT.children).forEach(node => !node.classList.contains('row') ? node.remove() : null);
+        document.querySelector('input[placeholder="Output"]').value = '';
+        CODE_INPUT.value = '';
+        FILES.innerHTML = '';
+        FILES_LIST.innerHTML = '';
     }
 
     // SEND FILES LOGIC
@@ -90,9 +102,6 @@
             for (let i = 1; i < files.length; i++) result.linksToFiles.append( await sendFile(files[i]) );
             haveFiles = true;
         }
-
-        clearPage(codeFromTextInput);
-        createFileInput();
 
         return result;
     }
@@ -134,14 +143,6 @@
         } catch(e){
             return 'Sorry, there was an error on the server, please try again later';
         }        
-    }
-
-    function clearPage() {
-        Array.from(OUTPUT.children).forEach(node => !node.classList.contains('row') ? node.remove() : null);
-        document.querySelector('input[placeholder="Output"]').value = '';
-        CODE_INPUT.value = '';
-        FILES.innerHTML = '';
-        FILES_LIST.innerHTML = '';
     }
     
     // SHOW RESULT
