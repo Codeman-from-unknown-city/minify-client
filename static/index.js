@@ -141,6 +141,7 @@
         FILES_LIST.innerHTML = '';
     }
     
+    // SHOW RESULT
     function showResult(message) {
         if (haveFiles) {
             const outputTitle = createNode('h3', null, 'Output Files:');
@@ -168,6 +169,7 @@
         OUTPUT.append(outputFile);
     }
     
+    // START APPLICATION
     createFileInput();
     document.querySelector('.send').addEventListener('click', sendLogic);
     document.querySelectorAll('input[name="type"').forEach(node => 
