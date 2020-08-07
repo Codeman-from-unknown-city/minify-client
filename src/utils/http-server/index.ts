@@ -14,6 +14,6 @@ export default function httpHandler(req: IncomingMessage, res: ServerResponse): 
             break;
 
         default:
-            res.writeHead(405, 'Method Not Allowed').end()
+            res.writeHead(405, 'Method Not Allowed').end();
     }
 }

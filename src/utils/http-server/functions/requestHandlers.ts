@@ -34,7 +34,7 @@ function handlePost(req: IncomingMessage, res: ServerResponse): void {
         console.log(body);
 
         res.end();
-    })
+    });
 }
 
 export { handleGet, handlePost };
