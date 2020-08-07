@@ -67,7 +67,7 @@
         event.preventDefault();
 
         const result = await sendLogic();
-        if (result !== undefined) return;
+        if (result === undefined) return;
 
         clearPage();
         createFileInput();
