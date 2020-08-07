@@ -1,6 +1,6 @@
 import { createServer } from "http";
 import { httpOptions } from "./utils/http-server/objects/serverConfig";
-import { cash } from "./utils/http-server/objects/cash";
+import { cash } from "./utils/cash";
 import { join } from "path"
 import httpHandler from "./utils/http-server/index";
 
