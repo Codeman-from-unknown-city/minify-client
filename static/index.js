@@ -146,7 +146,8 @@
     
     // SHOW RESULT
     function showResult(result) {
-        const { outputText, linksToFiles } = result;
+        const outputText = result.outputText;
+        const linksToFiles = result.linksToFiles;
         const haveFiles = linksToFiles[0];
 
         if (haveFiles) {
