@@ -49,12 +49,11 @@
     
     function addFile() {
         const fileName = this.files[0].name;
+
         const parent = this.parentNode;
-    
         parent.style.display = 'none';
     
         const file = createNode('li', 'file');
-    
         multiAppend(
             file,
             createNode('span', 'file-name', fileName),
@@ -63,7 +62,6 @@
                 parent.remove();
             })
         );
-    
         FILES_LIST.append(file);
     
         createFileInput();
