@@ -86,7 +86,8 @@
     async function sendLogic() {
         const files= document.querySelectorAll('.input-file');
         const codeFromTextInput = CODE_INPUT.value;
-        const extOfcodeFromTextInput = document.querySelector('input[type="radio"]:checked').value;
+        const checkbox = document.querySelector('input[type="radio"]:checked');
+        const extOfcodeFromTextInput = checkbox ? checkbox.value : undefined;
 
         if ( !checkInputs(files, codeFromTextInput) ) return;
 
