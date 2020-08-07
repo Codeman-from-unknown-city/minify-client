@@ -155,10 +155,10 @@
 
         if (haveFiles) {
             const outputTitle = createNode('h3', null, 'Output Files:');
-            const listOfOutputFiles = createNode('ul', 'output-viles');
+            const listOfOutputFiles = createNode('ul', 'output-files');
 
             linksToFiles.forEach(linkHTML => listOfOutputFiles.append(createNode('li', null, linkHTML)));
-            multiAppend(OUTPUT, outputTitle, linksToFiles);
+            multiAppend(OUTPUT, outputTitle, listOfOutputFiles);
         }
         
         if (outputText) document.querySelector('input[placeholder="Output"]').value = outputText;
