@@ -3,7 +3,6 @@
     const FILES_LIST = document.getElementById('added-files');
     const CODE_INPUT = document.querySelector('input[placeholder="Paste code"]');
     const OUTPUT = document.querySelector('.output');
-    let haveFiles;
     let ext = null;
     
     // UTILS
@@ -146,31 +145,19 @@
     }
     
     // SHOW RESULT
-    function showResult(message) {
+    function showResult(result) {
+        const { outputText, linksToFiles } = result;
+        const haveFiles = linksToFiles[0];
+
         if (haveFiles) {
             const outputTitle = createNode('h3', null, 'Output Files:');
-            OUTPUT.append(outputTitle);
+            const listOfOutputFiles = createNode('ul', 'output-viles');
+
+            linksToFiles.forEach(linkHTML => listOfOutputFiles.append(createNode('li', null, linkHTML)));
+            multiAppend(OUTPUT, outputTitle, linksToFiles);
         }
         
-        const { name, result } = JSON.parse(message.data);
-        if (name === 'input') {
-            document.querySelector('input[placeholder="Output"]').value = result;
-            return;
-        }
-        
-        haveFiles = false;
-        const outputFile = createNode('div', 'output-file');
-        const fileTitle = createNode('span', 'file-title', name,
-            'click',
-            function() {
-                this.parentNode.classList.toggle('active');
-            }
-        );
-        const lineBreak = createNode('div', 'w-100')
-        const fileCode = createNode('input', 'file-code');
-        fileCode.value = result;
-        multiAppend(outputFile, fileTitle, lineBreak, fileCode);
-        OUTPUT.append(outputFile);
+        if (outputText) document.querySelector('input[placeholder="Output"]').value = outputText;
     }
     
     // START APPLICATION
