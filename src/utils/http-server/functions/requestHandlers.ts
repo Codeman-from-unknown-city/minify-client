@@ -31,7 +31,6 @@ function handlePost(req: IncomingMessage, res: ServerResponse): void {
     });
 
     req.on('end', (): void => {
-        console.log(body);
 
         res.end();
     });
