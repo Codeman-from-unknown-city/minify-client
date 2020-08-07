@@ -105,12 +105,12 @@
         return result;
     }
 
-    function checkInputs(files, codeFromTextInput, extOfcodeFromTextInput) {
+    function checkInputs(files, code, ext) {
         // in files will be at least one elem all times
         if (codeFromTextInput === '' && !files[1]) {
             alert('Please upload file or paste your code');
             return false;
-        } else if (codeFromTextInput && !extOfcodeFromTextInput) {
+        } else if (code && !ext) {
             alert('Please select type of your code');
             return false;
         }
