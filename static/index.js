@@ -28,7 +28,7 @@
         return node;
     }
     
-    //ADD FILE LOGIC
+    // ADD FILE LOGIC
     function createFileInput() {
         const fileHTML = `
         <div class="form-group">
@@ -51,7 +51,6 @@
         const fileName = this.files[0].name;
         const parent = this.parentNode;
     
-        this.id = fileName;
         parent.style.display = 'none';
     
         const file = createNode('li', 'file');
