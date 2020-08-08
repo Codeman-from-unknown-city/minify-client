@@ -2,9 +2,7 @@
 
 import isValidData from "./checkData";
 
-export default function toProcessData(message: any): I.Data {
-    const data: string = message.data;
-
+export default function toProcessData(data: string): I.Data {
     if (!isValidData(data)) throw new Error('Unsupported frame');
     else return JSON.parse(data);
 }

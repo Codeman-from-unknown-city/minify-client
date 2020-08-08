@@ -10,7 +10,7 @@ function isJSON(str: string): boolean {
 }
 
 export default function isValidData(data: string): boolean {
-    const IData: I.Data = {ext: '', code: '',};
+    const IData: I.Data = {ext: '', code: '', name: ''};
     if (!isJSON(data)) return false;
     data = JSON.parse(data);
     if (typeof data !== 'object') return false;

@@ -1,40 +1,35 @@
-import { readdir, readFile, Dirent } from "fs";
+import { promises, Dirent } from "fs";
 import { join, extname } from "path";
+import minify from "./minifyCode";
 
 class Cash extends Map {
-    addFile(filePath: string): void {
+    async addFile(filePath: string): Promise<void> {
+        let fileContent;
         const ext: string = extname(filePath).substring(1);
-        const callback = (err: NodeJS.ErrnoException | null, fileContent: string | Buffer): void => {
-            if (err) throw err;
-
-            super.set(filePath, fileContent);
-        }
     
         switch(ext) {
             case 'html':
             case 'css':
             case 'js':
-                readFile(filePath, 'utf8', callback); 
+                fileContent  = minify( {code: await promises.readFile(filePath, 'utf8'), ext} ); 
                 break;
     
             default:
-                readFile(filePath, callback);
+                fileContent = await promises.readFile(filePath);
         }
+
+        super.set(filePath, fileContent);
     }
 
-    addDirectory(directoryPath: string): void {
-        readdir(directoryPath,
-        {encoding: null, withFileTypes: true}, 
-        (err: NodeJS.ErrnoException | null, files: Dirent[]) => {
-            if (err) throw err;
+    async addDirectory(directoryPath: string): Promise<void> {
+        const files: Dirent[] = await promises.readdir(directoryPath, {encoding: null, withFileTypes: true});
+        
+        for (let file of files) {
+            const filePath: string = join(directoryPath, file.name);
 
-            for (let file of files) {
-                const filePath: string = join(directoryPath, file.name);
-
-                if (file.isDirectory()) this.addDirectory(filePath);
-                else this.addFile(filePath);
-            }
-        });
+            if (file.isDirectory()) this.addDirectory(filePath);
+            else this.addFile(filePath);
+        }
     }
 }
 
