@@ -3,6 +3,7 @@ import { cash } from "./utils/cash";
 import { join } from "path"
 import handleGet from "./utils/http-server/metods_handlers/get";
 import handlePut from "./utils/http-server/metods_handlers/put";
+import handlePost from "./utils/http-server/metods_handlers/post";
 
 cash.addDirectory( join(process.cwd(), 'static') );
 
@@ -17,6 +18,9 @@ createServer((req: IncomingMessage, res: ServerResponse): void => {
         case 'PUT':
             handlePut(req, res);
             break;
+
+        case 'POST': 
+            handlePost();
 
         default:
             res.writeHead(405, 'Method Not Allowed').end();
