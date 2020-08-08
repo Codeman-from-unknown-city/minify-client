@@ -91,17 +91,20 @@
 
         if ( !checkInputs(files, codeFromTextInput, extOfcodeFromTextInput) ) return;
 
-        const result = {
-            outputText: null,
-            linksToFiles: [],
-        };
+        const result = {outputText: null, linksToFiles: []};
 
-        if (codeFromTextInput && extOfcodeFromTextInput) result.outputText = await postData(
-            codeFromTextInput, 
-            extOfcodeFromTextInput
+        if (codeFromTextInput && extOfcodeFromTextInput) result.outputText = await sendData(
+                'POST',
+                'application/json',
+                JSON.stringify({
+                    code: codeFromTextInput,
+                    ext: extOfcodeFromTextInput
+                })
             );
     
-        if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.push(await sendFile(files[i]));
+        if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.push(
+                await sendData('PUT', 'multipart/form-data', files[i])
+            );
 
         return result;
     }
@@ -119,25 +122,14 @@
         return true;
     }
 
-    async function sendFile(input) {
-        const file = input.files[0];
-        const partsOfName = file.name.split('.');
-        const ext = partsOfName[partsOfName.length - 1];
-        const code = await file.text();  
-        
-        return await postData(code, ext, file.name);
-    }
-
-    async function postData(code, ext, name) {
-        const data = name ? {code, ext, name} : {code, ext};
-
+    async function sendData(method, type, body) {
         try {
             const response = await fetch(
                 '/', 
                 {
-                    method: 'POST',
-                    headers:{'Content-Type': 'application/json'},
-                    body: JSON.stringify(data),
+                    method,
+                    headers: {'Content-Type': type},
+                    body,
                 }
             );
 
