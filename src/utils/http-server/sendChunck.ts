@@ -1,5 +1,5 @@
 import { extname } from "path";
-import { MIME_TYPES } from "./../objects/mimeTypes";
+import { MIME_TYPES } from "./mimeTypes";
 import { ServerResponse } from "http";
 
 export default function sendChunk(res: ServerResponse, chunk: string | Buffer,  path?: string): void {
