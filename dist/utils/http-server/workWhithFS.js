@@ -16,8 +16,9 @@ exports.deleteUserDir = exports.saveFile = void 0;
 const fs_1 = require("fs");
 const minifyCode_1 = __importDefault(require("../minifyCode"));
 const path_1 = require("path");
+const getPathToUserDir = (userId) => path_1.join(process.cwd(), 'users_files', userId);
 const saveFile = (userId, file) => __awaiter(void 0, void 0, void 0, function* () {
-    const pathToUserDir = path_1.join(process.cwd(), 'users_files', userId);
+    const pathToUserDir = getPathToUserDir(userId);
     const filePath = path_1.join(pathToUserDir, file.name);
     try {
         yield fs_1.promises.mkdir(pathToUserDir);
@@ -28,5 +29,5 @@ const saveFile = (userId, file) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.saveFile = saveFile;
-const deleteUserDir = (userId) => __awaiter(void 0, void 0, void 0, function* () { return yield fs_1.promises.rmdir(path_1.join(process.cwd(), 'users_files', userId), { recursive: true }); });
+const deleteUserDir = (userId) => __awaiter(void 0, void 0, void 0, function* () { return yield fs_1.promises.rmdir(getPathToUserDir(userId), { recursive: true }); });
 exports.deleteUserDir = deleteUserDir;

@@ -2,8 +2,10 @@ import { promises as fsPromises } from "fs";
 import minify from "../minifyCode";
 import { join } from "path";
 
+const getPathToUserDir = (userId: string): string => join(process.cwd(), 'users_files', userId);
+
 const saveFile = async (userId: string, file: I.Data): Promise<void> => {
-    const pathToUserDir = join(process.cwd(), 'users_files', userId);
+    const pathToUserDir = getPathToUserDir(userId);
     const filePath = join(pathToUserDir, file.name);
 
     try {
@@ -15,6 +17,6 @@ const saveFile = async (userId: string, file: I.Data): Promise<void> => {
 }
 
 const deleteUserDir = async (userId: string): Promise<void> => 
-    await fsPromises.rmdir(join(process.cwd(), 'users_files', userId), {recursive: true});
+    await fsPromises.rmdir(getPathToUserDir(userId), {recursive: true});
 
 export { saveFile, deleteUserDir };
