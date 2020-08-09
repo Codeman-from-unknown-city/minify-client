@@ -5,7 +5,8 @@ import { cash } from "../../cash";
 import sendChunck from "../sendChunck";
 import { promises as fsPromises } from "fs";
 
-const STATIC_PATH: string = join(process.cwd(), 'static');
+const WORK_DIR = process.cwd();
+const STATIC_PATH: string = join(WORK_DIR, 'static');
 
 export default async function handleGet(res: ServerResponse, url: string | undefined): Promise<void> {
     const sendError = notBindedSendError.bind(null, res);
@@ -30,10 +31,11 @@ export default async function handleGet(res: ServerResponse, url: string | undef
     const cashedFile: string | Buffer | undefined = cash.get( join(STATIC_PATH, url) );
     if (cashedFile) sendChunck(res, cashedFile, url);
     else try {
-        const filePath = join(STATIC_PATH, url)
+        const filePath = join(WORK_DIR, 'users_files', url);
         const fileContent = await fsPromises.readFile(filePath);
+
         sendChunck(res, fileContent, filePath);
     } catch(e) {
-        sendChunck(res, 'error.html', 'error');
+        sendChunck(res, 'error', 'error.html');
     }
 }

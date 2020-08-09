@@ -2,9 +2,9 @@ import { IncomingMessage, ServerResponse } from "http";
 import { notBindedSendError } from "../sendError";
 import toProcessData from "../handle_data/handleData";
 import { join } from "path";
-import { promises as fsPromises } from "fs";
-import minify from "../../minifyCode";
 import sendChunck from "../sendChunck";
+import { saveFile } from "../workWhithFS";
+import { sumIp } from "../sumIp";
 
 export default async function handlePut(req: IncomingMessage, res: ServerResponse): Promise<void> {
     const sendError = notBindedSendError.bind(null, res);
@@ -16,6 +16,7 @@ export default async function handlePut(req: IncomingMessage, res: ServerRespons
 
     req.on('end', async (): Promise<void> => {
         let file;
+
         try {
             file = toProcessData(body);
         } catch(e) {
@@ -23,29 +24,17 @@ export default async function handlePut(req: IncomingMessage, res: ServerRespons
             return;
         }
 
-        const ip: string | undefined = req.socket.remoteAddress;
+        const ip: string | undefined = res.socket.remoteAddress;
         if (!ip) {
             sendError(500, 'Unforessen situation');
             return;
         }
         
-        const userId: string = ip
-            .split('.')
-            .reduce((sum: number, current: string) => sum + +current, 0)
-            .toString();
+        const userId: string = sumIp(ip);
         
-        const userDirPath: string = join(process.cwd(), 'users_files', userId);
-        const fileName: string = file.name;
-        const filePath: string = join(userDirPath, fileName);
+        await saveFile(userId, file);
         
-        
-        try {
-            await fsPromises.mkdir(userDirPath);
-        } catch(e) {} 
-        finally {
-            await fsPromises.writeFile(filePath, minify(file));
-
-            sendChunck(res, `<a download href="${join(userId, fileName)}">${fileName}</a>`);
-        }
+        const fileName = file.name;
+        sendChunck(res, `<a download href="${join(userId, fileName)}">${fileName}</a>`);
     });
 }

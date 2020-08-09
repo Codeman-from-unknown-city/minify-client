@@ -15,9 +15,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const sendError_1 = require("../sendError");
 const handleData_1 = __importDefault(require("../handle_data/handleData"));
 const path_1 = require("path");
-const fs_1 = require("fs");
-const minifyCode_1 = __importDefault(require("../../minifyCode"));
 const sendChunck_1 = __importDefault(require("../sendChunck"));
+const workWhithFS_1 = require("../workWhithFS");
+const sumIp_1 = require("../sumIp");
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendError = sendError_1.notBindedSendError.bind(null, res);
@@ -34,26 +34,15 @@ function handlePut(req, res) {
                 sendError(400, e.message);
                 return;
             }
-            const ip = req.socket.remoteAddress;
+            const ip = res.socket.remoteAddress;
             if (!ip) {
                 sendError(500, 'Unforessen situation');
                 return;
             }
-            const userId = ip
-                .split('.')
-                .reduce((sum, current) => sum + +current, 0)
-                .toString();
-            const userDirPath = path_1.join(process.cwd(), 'users_files', userId);
+            const userId = sumIp_1.sumIp(ip);
+            yield workWhithFS_1.saveFile(userId, file);
             const fileName = file.name;
-            const filePath = path_1.join(userDirPath, fileName);
-            try {
-                yield fs_1.promises.mkdir(userDirPath);
-            }
-            catch (e) { }
-            finally {
-                yield fs_1.promises.writeFile(filePath, minifyCode_1.default(file));
-                sendChunck_1.default(res, `<a download href="${path_1.join(userId, fileName)}">${fileName}</a>`);
-            }
+            sendChunck_1.default(res, `<a download href="${path_1.join(userId, fileName)}">${fileName}</a>`);
         }));
     });
 }

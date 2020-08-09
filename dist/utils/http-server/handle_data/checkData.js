@@ -1,24 +1,23 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.isValidData = exports.isJSON = void 0;
 function isJSON(str) {
     try {
-        JSON.parse(str);
+        return JSON.parse(str);
     }
     catch (e) {
         return false;
     }
-    return true;
 }
+exports.isJSON = isJSON;
 function isValidData(data) {
     const IData = { ext: '', code: '', name: '' };
-    if (!isJSON(data))
-        return false;
-    data = JSON.parse(data);
-    if (typeof data !== 'object')
+    const file = isJSON(data);
+    if (typeof file !== 'object')
         return false;
     for (let prop in IData)
-        if (data[prop] === undefined)
+        if (typeof file[prop] !== typeof IData[prop])
             return false;
     return true;
 }
-exports.default = isValidData;
+exports.isValidData = isValidData;

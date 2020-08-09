@@ -20,8 +20,8 @@ http_1.createServer((req, res) => {
             put_1.default(req, res);
             break;
         case 'POST':
-            post_1.default();
+            post_1.default(req, res);
         default:
-            res.writeHead(405, 'Method Not Allowed').end();
+            res.writeHead(501, 'Method Not Allowed').end();
     }
-}).listen(process.env.PORT || '8000');
+}).listen(process.env.PORT || 8000);

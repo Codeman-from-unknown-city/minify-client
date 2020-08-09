@@ -17,7 +17,8 @@ const sendError_1 = require("../sendError");
 const cash_1 = require("../../cash");
 const sendChunck_1 = __importDefault(require("../sendChunck"));
 const fs_1 = require("fs");
-const STATIC_PATH = path_1.join(process.cwd(), 'static');
+const WORK_DIR = process.cwd();
+const STATIC_PATH = path_1.join(WORK_DIR, 'static');
 function handleGet(res, url) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendError = sendError_1.notBindedSendError.bind(null, res);
@@ -40,12 +41,12 @@ function handleGet(res, url) {
             sendChunck_1.default(res, cashedFile, url);
         else
             try {
-                const filePath = path_1.join(STATIC_PATH, url);
+                const filePath = path_1.join(WORK_DIR, 'users_files', url);
                 const fileContent = yield fs_1.promises.readFile(filePath);
                 sendChunck_1.default(res, fileContent, filePath);
             }
             catch (e) {
-                sendChunck_1.default(res, 'error.html', 'error');
+                sendChunck_1.default(res, 'error', 'error.html');
             }
     });
 }

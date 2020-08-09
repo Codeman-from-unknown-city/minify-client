@@ -9,20 +9,20 @@ cash.addDirectory( join(process.cwd(), 'static') );
 
 createServer((req: IncomingMessage, res: ServerResponse): void => {
     const { url, method } = req;
-
+    
     switch(method) {
         case 'GET':
             handleGet(res, url);
             break;
 
-        case 'PUT':
+        case 'PUT': 
             handlePut(req, res);
             break;
 
-        case 'POST': 
-            handlePost();
+        case 'POST':
+            handlePost(req, res);
 
         default:
-            res.writeHead(405, 'Method Not Allowed').end();
+            res.writeHead(501, 'Method Not Allowed').end();
     }
-}).listen(process.env.PORT || '8000');
+}).listen(process.env.PORT || 8000);
