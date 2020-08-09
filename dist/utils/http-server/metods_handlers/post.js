@@ -14,7 +14,6 @@ const sumIp_1 = require("../sumIp");
 const sendError_1 = require("../sendError");
 function handlePost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log('post');
         const sendError = sendError_1.notBindedSendError.bind(null, res);
         const ip = req.socket.remoteAddress;
         if (!ip) {
