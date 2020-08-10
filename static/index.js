@@ -22,6 +22,18 @@
     
         return node;
     }
+
+    // DELETE ALL FILES OF THIS USER ON SERVER
+    async function deleteUserFiles() {
+        await fetch(
+            '/',
+            {
+                method: 'POST',
+                headers: {"Content-Type": "text/plain"},
+                data: 'Delete data'
+            }
+        );
+    }
     
     // ADD FILE LOGIC
     function createFileInput() {
@@ -65,6 +77,7 @@
     // APPLICATION LOGIC
     async function appLogic(event) {
         event.preventDefault();
+        await deleteUserFiles();
 
         const result = await sendLogic();
         if (result === undefined) return;
@@ -169,12 +182,5 @@
     // START APPLICATION
     createFileInput();
     document.querySelector('.send').addEventListener('click', appLogic);
-    window.addEventListener('unload', () => fetch(
-        '/',
-        {
-            method: 'POST',
-            headers: {"Content-Type": "text/plain"},
-            data: 'User leave page'
-        }
-    ));
+    window.addEventListener('unload', deleteUserFiles);
 })();
