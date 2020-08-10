@@ -5,20 +5,18 @@ import { join } from "path";
 import sendChunck from "../sendChunck";
 import { saveFile } from "../workWhithFS";
 import { sumIp } from "../sumIp";
+import awaitData from "./../awaitData";
 
 export default async function handlePut(req: IncomingMessage, res: ServerResponse): Promise<void> {
     const sendError = notBindedSendError.bind(null, res);
-    let body: string = '';
 
-    req.on('data', (chunk: Buffer): void => {
-        body += chunk.toString();
-    });
+    awaitData(req, async (err: Error | null, data: string): Promise<void> => {
+        if (err) throw err;
 
-    req.on('end', async (): Promise<void> => {
         let file;
 
         try {
-            file = toProcessData(body);
+            file = toProcessData(data);
         } catch(e) {
             sendError(400, e.message);
             return;

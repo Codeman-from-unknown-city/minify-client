@@ -18,17 +18,16 @@ const path_1 = require("path");
 const sendChunck_1 = __importDefault(require("../sendChunck"));
 const workWhithFS_1 = require("../workWhithFS");
 const sumIp_1 = require("../sumIp");
+const awaitData_1 = __importDefault(require("./../awaitData"));
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendError = sendError_1.notBindedSendError.bind(null, res);
-        let body = '';
-        req.on('data', (chunk) => {
-            body += chunk.toString();
-        });
-        req.on('end', () => __awaiter(this, void 0, void 0, function* () {
+        awaitData_1.default(req, (err, data) => __awaiter(this, void 0, void 0, function* () {
+            if (err)
+                throw err;
             let file;
             try {
-                file = handleData_1.default(body);
+                file = handleData_1.default(data);
             }
             catch (e) {
                 sendError(400, e.message);
