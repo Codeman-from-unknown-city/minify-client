@@ -16,9 +16,8 @@ export default async function handlePost(req: IncomingMessage, res: ServerRespon
 
     try {
         await deleteUserDir(userId);
-    } catch(e) {
-        sendError(501)
-    } finally {
+    } catch(e) {} 
+    finally {
         res
            .writeHead(200, 'ok')
            .end();

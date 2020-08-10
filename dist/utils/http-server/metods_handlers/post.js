@@ -24,9 +24,7 @@ function handlePost(req, res) {
         try {
             yield workWhithFS_1.deleteUserDir(userId);
         }
-        catch (e) {
-            sendError(501);
-        }
+        catch (e) { }
         finally {
             res
                 .writeHead(200, 'ok')
