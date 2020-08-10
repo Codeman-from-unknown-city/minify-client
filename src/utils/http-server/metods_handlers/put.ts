@@ -37,6 +37,6 @@ export default async function handlePut(req: IncomingMessage, res: ServerRespons
         await saveFile(userId, file);
         
         const fileName = file.name;
-        sendChunck(res, `<a download href="${join(userId, fileName)}">${fileName}</a>`);
+        sendChunck(res, `<a download href="${join('users_files', fileName)}">${fileName}</a>`);
     });
 }

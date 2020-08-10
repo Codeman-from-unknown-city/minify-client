@@ -6,15 +6,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
 const cash_1 = require("./utils/cash");
 const path_1 = require("path");
-const get_1 = __importDefault(require("./utils/http-server/metods_handlers/get"));
+const get_1 = __importDefault(require("./utils/http-server/metods_handlers/get/get"));
 const put_1 = __importDefault(require("./utils/http-server/metods_handlers/put"));
 const post_1 = __importDefault(require("./utils/http-server/metods_handlers/post"));
 cash_1.cash.addDirectory(path_1.join(process.cwd(), 'static'));
 http_1.createServer((req, res) => {
-    const { url, method } = req;
+    const { method } = req;
     switch (method) {
         case 'GET':
-            get_1.default(res, url);
+            get_1.default(req, res);
             break;
         case 'PUT':
             put_1.default(req, res);

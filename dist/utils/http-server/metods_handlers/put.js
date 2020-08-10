@@ -43,7 +43,7 @@ function handlePut(req, res) {
             const userId = sumIp_1.sumIp(ip);
             yield workWhithFS_1.saveFile(userId, file);
             const fileName = file.name;
-            sendChunck_1.default(res, `<a download href="${path_1.join(userId, fileName)}">${fileName}</a>`);
+            sendChunck_1.default(res, `<a download href="${path_1.join('users_files', fileName)}">${fileName}</a>`);
         }));
     });
 }

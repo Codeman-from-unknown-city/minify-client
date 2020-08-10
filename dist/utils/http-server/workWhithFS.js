@@ -19,6 +19,8 @@ const path_1 = require("path");
 const getPathToUserDir = (userId) => path_1.join(process.cwd(), 'users_files', userId);
 const saveFile = (userId, file) => __awaiter(void 0, void 0, void 0, function* () {
     const { name, ext, code } = file;
+    if (!name)
+        return;
     const pathToUserDir = getPathToUserDir(userId);
     const filePath = path_1.join(pathToUserDir, name);
     try {

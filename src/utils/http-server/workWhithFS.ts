@@ -6,7 +6,10 @@ const getPathToUserDir = (userId: string): string => join(process.cwd(), 'users_
 
 const saveFile = async (userId: string, file: I.Data): Promise<void> => {
     const { name, ext, code} = file;
+    if (!name) return;
+
     const pathToUserDir = getPathToUserDir(userId);
+
     const filePath = join(pathToUserDir, name);
 
     try {
