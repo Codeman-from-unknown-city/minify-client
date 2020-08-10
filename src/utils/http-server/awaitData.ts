@@ -6,8 +6,8 @@ export default function awaitData(req: IncomingMessage, callback: (err: Error | 
     req
        .on('data', (chunk: Buffer): void => {
             body.push(chunk);
-        })
-        .on('end', (): void => {
+       })
+       .on('end', (): void => {
             callback(null, Buffer.concat(body).toString());
-        });
+       });
 }
