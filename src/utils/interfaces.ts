@@ -1,13 +1,8 @@
 namespace I {
     export interface Data {
-        ext: string,
-        code: string,
-        name: string
-    }
-
-    export interface postData {
-        ext: string,
+        ext: string
         code: string
+        name?: string
     }
 
     export interface Config {

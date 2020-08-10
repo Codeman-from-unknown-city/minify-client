@@ -1,3 +1,5 @@
+/// <reference path="../../interfaces.ts" />
+
 import { IncomingMessage, ServerResponse } from "http";
 import { notBindedSendError } from "../sendError";
 import toProcessData from "../handle_data/handleData";
@@ -13,10 +15,12 @@ export default async function handlePut(req: IncomingMessage, res: ServerRespons
     awaitData(req, async (err: Error | null, data: string): Promise<void> => {
         if (err) throw err;
 
-        let file;
+        let file: I.Data;
 
         try {
             file = toProcessData(data);
+
+            if (!file.name) throw new Error;
         } catch(e) {
             sendError(400, e.message);
             return;

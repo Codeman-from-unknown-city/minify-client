@@ -28,6 +28,8 @@ function handlePut(req, res) {
             let file;
             try {
                 file = handleData_1.default(data);
+                if (!file.name)
+                    throw new Error;
             }
             catch (e) {
                 sendError(400, e.message);
