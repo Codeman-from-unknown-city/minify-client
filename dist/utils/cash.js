@@ -28,7 +28,7 @@ class Cash extends Map {
                 case 'html':
                 case 'css':
                 case 'js':
-                    fileContent = minifyCode_1.default({ code: yield fs_1.promises.readFile(filePath, 'utf8'), ext });
+                    fileContent = minifyCode_1.default(yield fs_1.promises.readFile(filePath, 'utf8'), ext);
                     break;
                 default:
                     fileContent = yield fs_1.promises.readFile(filePath);

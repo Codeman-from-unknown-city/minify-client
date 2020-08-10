@@ -5,14 +5,15 @@ import { join } from "path";
 const getPathToUserDir = (userId: string): string => join(process.cwd(), 'users_files', userId);
 
 const saveFile = async (userId: string, file: I.Data): Promise<void> => {
+    const { name, ext, code} = file;
     const pathToUserDir = getPathToUserDir(userId);
-    const filePath = join(pathToUserDir, file.name);
+    const filePath = join(pathToUserDir, name);
 
     try {
         await fsPromises.mkdir(pathToUserDir);
     } catch(e) {} 
     finally {
-        await fsPromises.writeFile(filePath, minify(file));
+        await fsPromises.writeFile(filePath, minify(code, ext));
     }
 }
 

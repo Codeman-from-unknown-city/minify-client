@@ -18,14 +18,15 @@ const minifyCode_1 = __importDefault(require("../minifyCode"));
 const path_1 = require("path");
 const getPathToUserDir = (userId) => path_1.join(process.cwd(), 'users_files', userId);
 const saveFile = (userId, file) => __awaiter(void 0, void 0, void 0, function* () {
+    const { name, ext, code } = file;
     const pathToUserDir = getPathToUserDir(userId);
-    const filePath = path_1.join(pathToUserDir, file.name);
+    const filePath = path_1.join(pathToUserDir, name);
     try {
         yield fs_1.promises.mkdir(pathToUserDir);
     }
     catch (e) { }
     finally {
-        yield fs_1.promises.writeFile(filePath, minifyCode_1.default(file));
+        yield fs_1.promises.writeFile(filePath, minifyCode_1.default(code, ext));
     }
 });
 exports.saveFile = saveFile;

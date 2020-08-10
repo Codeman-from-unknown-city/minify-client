@@ -35,7 +35,7 @@ function replaceInnerHtml(match: string, tag: string, code: string): string {
     return `<${tag}>${result}</${tag}>`
 }
 
-export default function minify(file: I.postData | I.Data, { code, ext } = file): string { 
+export default function minify(code: string, ext: string): string { 
     let result: string;
 
     switch(ext) {

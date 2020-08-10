@@ -11,7 +11,7 @@ class Cash extends Map {
             case 'html':
             case 'css':
             case 'js':
-                fileContent  = minify( {code: await promises.readFile(filePath, 'utf8'), ext} ); 
+                fileContent  = minify(await promises.readFile(filePath, 'utf8'), ext); 
                 break;
     
             default:

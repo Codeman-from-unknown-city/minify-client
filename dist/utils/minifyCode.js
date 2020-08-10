@@ -27,7 +27,7 @@ function replaceInnerHtml(match, tag, code) {
     let result = tag === 'style' ? minifyCss(code) : minifyJs(code);
     return `<${tag}>${result}</${tag}>`;
 }
-function minify(file, { code, ext } = file) {
+function minify(code, ext) {
     let result;
     switch (ext) {
         case 'html':
