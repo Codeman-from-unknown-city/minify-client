@@ -1,6 +1,6 @@
 /// <reference path="../../interfaces.ts" />
 
-function isJSON(str: string): boolean | I.Data | I.File {
+function isJSON(str: string): boolean | I.Data {
     try {
        return JSON.parse(str);
     } catch (e) {
@@ -8,15 +8,5 @@ function isJSON(str: string): boolean | I.Data | I.File {
     }
 }
 
-// function isValidData(data: string): boolean {
-//     const file = isJSON(data);
-//     const checkCondition: boolean = typeof file === 'object' && file.ext && file.code;
-
-//     if (typeof file !== 'object') return false;
-    
-    
-//     return true;
-// }
-
-export const isValidData = (data: string, file: boolean | I.Data | I.File = isJSON(data)): boolean =>
+export const isValidData = (data: string, file: boolean | I.Data  = isJSON(data)): boolean =>
     file && typeof file === 'object' && file.ext && file.code ? true : false;

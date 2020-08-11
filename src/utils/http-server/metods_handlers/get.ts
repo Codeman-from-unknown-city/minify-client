@@ -1,20 +1,23 @@
-/// <reference path="../../../interfaces.ts" />
-
-import { IncomingMessage, ServerResponse } from "http";
-import { notBindedSendError } from "../../sendError";
+import { ServerResponse } from "http";
 import { join } from "path";
-import sendChunck from "../../sendChunck";
-import { cash } from "../../../cash";
-import { sumIp } from "../../sumIp";
-import toProcessData from "../../handle_data/handleData";
-import minify from "../../../minifyCode";
+import { notBindedSendError } from "../sendError";
+import { cash } from "../../cash";
+import sendChunck from "../sendChunck";
+import { Routing, IRoutingHandler } from "../routing";
+import { sumIp } from "../sumIp";
+import toProcessData from "../handle_data/handleData";
+import minify from "../../minifyCode";
 import { promises as fsPromises } from "fs";
-import awaitData from "../../awaitData";
+import awaitData from "../awaitData";
+import checkedIncomingMessage from "../../../IncomingMessage";
 
 const WORK_DIR = process.cwd();
+const STATIC_PATH: string = join(WORK_DIR, 'static');
 
-export const routing: Map<string | RegExp, (req: IncomingMessage, res: ServerResponse) => void> = new Map()
-.set('/', (req: IncomingMessage, res: ServerResponse): void => {
+const routing: Routing = new Routing();
+
+routing
+.set('/', (req: checkedIncomingMessage, res: ServerResponse): void => {
     const sendError = notBindedSendError.bind(null, res);
     const indexPath: string = join(WORK_DIR, 'static', 'index.html');
     const index: string | Buffer | undefined = cash.get(indexPath);
@@ -25,13 +28,9 @@ export const routing: Map<string | RegExp, (req: IncomingMessage, res: ServerRes
     
     sendChunck(res, index, indexPath);
 })
-.set('/users_files/', async (req: IncomingMessage, res: ServerResponse): Promise<void> => {
+.set(/\/users_files\/*/, async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> => {
     const sendError = notBindedSendError.bind(null, res);
     const { url } = req;
-    if (!url) {
-        sendError(500, 'Unforessen situation');
-        return;
-    }
 
     try {
         const ip: string | undefined = req.socket.remoteAddress;
@@ -52,7 +51,7 @@ export const routing: Map<string | RegExp, (req: IncomingMessage, res: ServerRes
         sendChunck(res, 'error', 'error.html');
     }
 })
-.set('/api/minify', (req: IncomingMessage, res: ServerResponse): void => 
+.set('/api/minify', (req: checkedIncomingMessage, res: ServerResponse): void => 
         awaitData(req, 
             (err: Error | null, data: string): void => {
                 if (err) throw err;
@@ -71,3 +70,13 @@ export const routing: Map<string | RegExp, (req: IncomingMessage, res: ServerRes
             }        
         )
 );
+
+export default async function handleGet(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
+    const { url } = req;
+    const cashedFile: string | Buffer | undefined = cash.get( join(STATIC_PATH, url) );
+    const urlHandler: IRoutingHandler | void = routing.getHandler(url);
+    
+    if (urlHandler) urlHandler(req, res)
+    else if (cashedFile) sendChunck(res, cashedFile, url);
+    else sendChunck(res, 'error', 'error.html');
+}

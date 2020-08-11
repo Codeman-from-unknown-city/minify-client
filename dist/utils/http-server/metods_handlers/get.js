@@ -12,21 +12,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const handleData_1 = __importDefault(require("../handle_data/handleData"));
 const path_1 = require("path");
 const sendError_1 = require("../sendError");
 const cash_1 = require("../../cash");
 const sendChunck_1 = __importDefault(require("../sendChunck"));
+const routing_1 = require("../routing");
+const sumIp_1 = require("../sumIp");
+const handleData_1 = __importDefault(require("../handle_data/handleData"));
+const minifyCode_1 = __importDefault(require("../../minifyCode"));
 const fs_1 = require("fs");
 const awaitData_1 = __importDefault(require("../awaitData"));
-const minifyCode_1 = __importDefault(require("../../minifyCode"));
-const sumIp_1 = require("../sumIp");
 const WORK_DIR = process.cwd();
 const STATIC_PATH = path_1.join(WORK_DIR, 'static');
-const routing = new Map()
+const routing = new routing_1.Routing();
+routing
     .set('/', (req, res) => {
     const sendError = sendError_1.notBindedSendError.bind(null, res);
-    const indexPath = path_1.join(STATIC_PATH, 'index.html');
+    const indexPath = path_1.join(WORK_DIR, 'static', 'index.html');
     const index = cash_1.cash.get(indexPath);
     if (!index) {
         sendError(500, 'Server is prepare page');
@@ -34,13 +36,9 @@ const routing = new Map()
     }
     sendChunck_1.default(res, index, indexPath);
 })
-    .set('/users_files/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    .set(/\/users_files\/*/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const sendError = sendError_1.notBindedSendError.bind(null, res);
     const { url } = req;
-    if (!url) {
-        sendError(500, 'Unforessen situation');
-        return;
-    }
     try {
         const ip = req.socket.remoteAddress;
         if (!ip) {
@@ -74,16 +72,9 @@ const routing = new Map()
 }));
 function handleGet(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sendError = sendError_1.notBindedSendError.bind(null, res);
         const { url } = req;
-        if (!url) {
-            sendError(500, 'Unforessen situation');
-            return;
-        }
         const cashedFile = cash_1.cash.get(path_1.join(STATIC_PATH, url));
-        const urlHandler = url.includes('users_files') ?
-            routing.get('/users_files/') :
-            routing.get(url);
+        const urlHandler = routing.getHandler(url);
         if (urlHandler)
             urlHandler(req, res);
         else if (cashedFile)

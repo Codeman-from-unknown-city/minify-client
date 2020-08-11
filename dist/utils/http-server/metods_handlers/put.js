@@ -16,7 +16,7 @@ const sendError_1 = require("../sendError");
 const handleData_1 = __importDefault(require("../handle_data/handleData"));
 const path_1 = require("path");
 const sendChunck_1 = __importDefault(require("../sendChunck"));
-const workWhithFS_1 = require("../workWhithFS");
+const workWhithFS_1 = require("../../workWhithFS");
 const sumIp_1 = require("../sumIp");
 const awaitData_1 = __importDefault(require("./../awaitData"));
 function handlePut(req, res) {
@@ -35,11 +35,7 @@ function handlePut(req, res) {
                 sendError(400, e.message);
                 return;
             }
-            const ip = res.socket.remoteAddress;
-            if (!ip) {
-                sendError(500, 'Unforessen situation');
-                return;
-            }
+            const ip = req.socket.remoteAddress;
             const userId = sumIp_1.sumIp(ip);
             yield workWhithFS_1.saveFile(userId, file);
             const fileName = file.name;

@@ -9,17 +9,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const workWhithFS_1 = require("../workWhithFS");
+const workWhithFS_1 = require("../../workWhithFS");
 const sumIp_1 = require("../sumIp");
-const sendError_1 = require("../sendError");
 function handlePost(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sendError = sendError_1.notBindedSendError.bind(null, res);
         const ip = req.socket.remoteAddress;
-        if (!ip) {
-            sendError(500, 'Unforessen situation');
-            return;
-        }
         const userId = sumIp_1.sumIp(ip);
         try {
             yield workWhithFS_1.deleteUserDir(userId);

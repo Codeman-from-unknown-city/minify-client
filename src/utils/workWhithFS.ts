@@ -1,5 +1,5 @@
 import { promises as fsPromises } from "fs";
-import minify from "../minifyCode";
+import minify from "./minifyCode";
 import { join } from "path";
 
 const getPathToUserDir = (userId: string): string => join(process.cwd(), 'users_files', userId);

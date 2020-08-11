@@ -1,17 +1,10 @@
-import { IncomingMessage, ServerResponse } from "http";
-import { deleteUserDir } from "../workWhithFS";
+import { ServerResponse } from "http";
+import { deleteUserDir } from "../../workWhithFS";
 import { sumIp } from "../sumIp";
-import { notBindedSendError } from "../sendError";
+import checkedIncomingMessage from "../../../IncomingMessage";
 
-export default async function handlePost(req: IncomingMessage, res: ServerResponse): Promise<void> {
-    const sendError = notBindedSendError.bind(null, res);
-
+export default async function handlePost(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const ip: string | undefined = req.socket.remoteAddress;
-    if (!ip) {
-        sendError(500, 'Unforessen situation');
-        return;
-    }
-
     const userId: string = sumIp(ip);
 
     try {
