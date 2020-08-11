@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const sendError_1 = require("../sendError");
-const cash_1 = require("../../cash");
+const cash_1 = __importDefault(require("../../cash"));
 const sendChunck_1 = __importDefault(require("../sendChunck"));
 const routing_1 = require("../routing");
 const sumIp_1 = require("../sumIp");
@@ -29,7 +29,7 @@ routing
     .set('/', (req, res) => {
     const sendError = sendError_1.notBindedSendError.bind(null, res);
     const indexPath = path_1.join(WORK_DIR, 'static', 'index.html');
-    const index = cash_1.cash.get(indexPath);
+    const index = cash_1.default.get(indexPath);
     if (!index) {
         sendError(500, 'Server is prepare page');
         return;
@@ -73,7 +73,7 @@ routing
 function handleGet(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { url } = req;
-        const cashedFile = cash_1.cash.get(path_1.join(STATIC_PATH, url));
+        const cashedFile = cash_1.default.get(path_1.join(STATIC_PATH, url));
         const urlHandler = routing.getHandler(url);
         if (urlHandler)
             urlHandler(req, res);

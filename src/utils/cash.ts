@@ -2,7 +2,7 @@ import { promises, Dirent } from "fs";
 import { join, extname } from "path";
 import minify from "./minifyCode";
 
-class Cash extends Map {
+class Cash extends Map<string, string | Buffer> {
     async addFile(filePath: string): Promise<void> {
         let fileContent;
         const ext: string = extname(filePath).substring(1);
@@ -33,4 +33,4 @@ class Cash extends Map {
     }
 }
 
-export const cash: Cash = new Cash();
+export default new Cash();

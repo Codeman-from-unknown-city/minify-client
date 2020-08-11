@@ -1,5 +1,5 @@
 import { createServer, IncomingMessage, ServerResponse } from "http";
-import { cash } from "./utils/cash";
+import cash from "./utils/cash";
 import { join } from "path"
 import handleGet from "./utils/http-server/metods_handlers/get";
 import handlePut from "./utils/http-server/metods_handlers/put";

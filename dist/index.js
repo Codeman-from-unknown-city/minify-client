@@ -4,12 +4,12 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const http_1 = require("http");
-const cash_1 = require("./utils/cash");
+const cash_1 = __importDefault(require("./utils/cash"));
 const path_1 = require("path");
 const get_1 = __importDefault(require("./utils/http-server/metods_handlers/get"));
 const put_1 = __importDefault(require("./utils/http-server/metods_handlers/put"));
 const post_1 = __importDefault(require("./utils/http-server/metods_handlers/post"));
-cash_1.cash.addDirectory(path_1.join(process.cwd(), 'static'));
+cash_1.default.addDirectory(path_1.join(process.cwd(), 'static'));
 http_1.createServer((req, res) => {
     const { method, url } = req;
     if (!url && !req.socket.remoteAddress)

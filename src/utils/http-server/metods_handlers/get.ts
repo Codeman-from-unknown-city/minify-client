@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
 import { join } from "path";
 import { notBindedSendError } from "../sendError";
-import { cash } from "../../cash";
+import cash from "../../cash";
 import sendChunck from "../sendChunck";
 import { Routing, IRoutingHandler } from "../routing";
 import { sumIp } from "../sumIp";
