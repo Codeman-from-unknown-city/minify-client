@@ -12,27 +12,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const sendError_1 = require("../../sendError");
-const handleData_1 = __importDefault(require("../handle_data/handleData"));
 const path_1 = require("path");
 const sendChunck_1 = __importDefault(require("../../sendChunck"));
 const workWhithFS_1 = require("../../../workWhithFS");
 const sumIp_1 = require("../../sumIp");
 const getRequestBody_1 = __importDefault(require("../getRequestBody"));
+const parseData_1 = __importDefault(require("../parseData"));
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const sendError = sendError_1.notBindedSendError.bind(null, res);
         const requestBody = yield getRequestBody_1.default(req);
-        let file;
-        try {
-            file = handleData_1.default(requestBody);
-            if (!file.name)
-                throw new Error();
-        }
-        catch (e) {
-            sendError(400, e.message);
-            return;
-        }
+        const expample = { name: '', ext: '', code: '' };
+        const file = parseData_1.default(requestBody, expample);
         const ip = req.socket.remoteAddress;
         const userId = sumIp_1.sumIp(ip);
         yield workWhithFS_1.saveFile(userId, file);

@@ -53,7 +53,7 @@ routing
 })
 .set('/api/minify', async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> =>  {
     const requestBody: string = await getRequestBody(req);
-    const example: I.Data = {name: '', ext: '', code: ''};
+    const example: I.Data = {ext: '', code: ''};
     const file = parseRequestBody(requestBody, example);
 
     sendChunck(res, minify(file.code, file.ext))

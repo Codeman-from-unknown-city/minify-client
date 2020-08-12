@@ -1,18 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-class ValidationError extends Error {
+const knownError_1 = __importDefault(require("../../knownError"));
+class ValidationError extends knownError_1.default {
     constructor(message) {
-        super(message);
-        this.name = this.constructor.name;
-        this.statusCode = 400;
+        super(message, 400);
     }
 }
 class PropertyError extends ValidationError {
     constructor(message, prop) {
         super(message);
-        this.message = message + prop;
+        this.message += `(${prop})`;
     }
 }
+const isNativeObj = (obj) => Object.prototype.toString.call(obj) === '[object Object]';
 function parseRequestBody(body, example) {
     let data;
     try {
@@ -21,14 +24,13 @@ function parseRequestBody(body, example) {
     catch (e) {
         throw new ValidationError('Invalid JSON');
     }
-    for (let prop in data)
-        !example[prop] ?  : ;
-    throw new PropertyError('Extra field:', prop);
+    if (!isNativeObj(data))
+        throw new ValidationError('Data should be obj');
     for (let prop in example) {
         if (!data[prop])
-            throw new PropertyError('Missing property:', prop);
+            throw new PropertyError('Missing property', prop);
         if (typeof data[prop] !== typeof example[prop])
-            throw new PropertyError('Invalid type of property:', prop);
+            throw new PropertyError('Invalid type of property', prop);
     }
     return data;
 }

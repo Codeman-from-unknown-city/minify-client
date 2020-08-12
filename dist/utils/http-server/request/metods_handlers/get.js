@@ -18,10 +18,10 @@ const cash_1 = __importDefault(require("../../../cash"));
 const sendChunck_1 = __importDefault(require("../../sendChunck"));
 const routing_1 = require("../../routing");
 const sumIp_1 = require("../../sumIp");
-const handleData_1 = __importDefault(require("../handle_data/handleData"));
 const minifyCode_1 = __importDefault(require("../../../minifyCode"));
 const fs_1 = require("fs");
 const getRequestBody_1 = __importDefault(require("../getRequestBody"));
+const parseData_1 = __importDefault(require("../parseData"));
 const WORK_DIR = process.cwd();
 const STATIC_PATH = path_1.join(WORK_DIR, 'static');
 const routing = new routing_1.Routing();
@@ -58,15 +58,8 @@ routing
 }))
     .set('/api/minify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requestBody = yield getRequestBody_1.default(req);
-    const sendError = sendError_1.notBindedSendError.bind(null, res);
-    let file;
-    try {
-        file = handleData_1.default(requestBody);
-    }
-    catch (e) {
-        sendError(400, e.message);
-        return;
-    }
+    const example = { ext: '', code: '' };
+    const file = parseData_1.default(requestBody, example);
     sendChunck_1.default(res, minifyCode_1.default(file.code, file.ext));
 }));
 function handleGet(req, res) {

@@ -1,10 +1,8 @@
 import KnownError from "../../knownError";
 
 class ValidationError extends KnownError {
-    [i: string]: string | undefined | number;
     constructor(message: string) {
-        super(message);
-        this.statusCode = 400
+        super(message, 400);
     }
 }
 
