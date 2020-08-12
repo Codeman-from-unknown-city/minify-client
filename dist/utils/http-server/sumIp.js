@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.sumIp = void 0;
-exports.sumIp = (ip) => {
+exports.default = (ip) => {
     const isIPv6 = ip.includes(':');
     if (isIPv6)
         return ip

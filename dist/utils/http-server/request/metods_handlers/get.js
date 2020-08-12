@@ -13,54 +13,46 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
-const sendError_1 = require("../../sendError");
 const cash_1 = __importDefault(require("../../../cash"));
-const sendChunck_1 = __importDefault(require("../../sendChunck"));
 const routing_1 = require("../../routing");
-const sumIp_1 = require("../../sumIp");
-const minifyCode_1 = __importDefault(require("../../../minifyCode"));
+const sumIp_1 = __importDefault(require("../../sumIp"));
 const fs_1 = require("fs");
-const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
-const parseData_1 = __importDefault(require("../data/parseData"));
+const sendResponse_1 = __importDefault(require("../../sendResponse"));
+const knownError_1 = __importDefault(require("../../../knownError"));
+class NotFoudError extends knownError_1.default {
+    constructor(message) {
+        super(message, 404);
+    }
+}
+class PrepareError extends knownError_1.default {
+    constructor() {
+        super('Server is prepare page', 500);
+    }
+}
 const WORK_DIR = process.cwd();
 const STATIC_PATH = path_1.join(WORK_DIR, 'static');
-const routing = new routing_1.Routing();
-routing
-    .set('/', (req, res) => {
-    const sendError = sendError_1.notBindedSendError.bind(null, res);
-    const indexPath = path_1.join(WORK_DIR, 'static', 'index.html');
+const routing = new routing_1.Routing()
+    .set('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const indexPath = path_1.join(STATIC_PATH, 'index.html');
     const index = cash_1.default.get(indexPath);
-    if (!index) {
-        sendError(500, 'Server is prepare page');
-        return;
-    }
-    sendChunck_1.default(res, index, indexPath);
-})
+    if (!index)
+        throw new PrepareError();
+    sendResponse_1.default(res, 200, 'OK', index, 'html');
+}))
     .set(/\/users_files\/*/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const sendError = sendError_1.notBindedSendError.bind(null, res);
-    const { url } = req;
     try {
-        const ip = req.socket.remoteAddress;
-        if (!ip) {
-            sendError(500, 'Unforessen situation');
-            return;
-        }
+        const { url, socket } = req;
+        const ip = socket.remoteAddress;
         const partsOfUrl = url.split('/');
-        const filename = partsOfUrl[partsOfUrl.length - 1];
-        const userId = sumIp_1.sumIp(ip);
-        const filePath = path_1.join(WORK_DIR, 'users_files', userId, filename);
+        const fileName = partsOfUrl[partsOfUrl.length - 1];
+        const userId = sumIp_1.default(ip);
+        const filePath = path_1.join(WORK_DIR, 'users_files', userId, fileName);
         const fileContent = yield fs_1.promises.readFile(filePath);
-        sendChunck_1.default(res, fileContent, filePath);
+        sendResponse_1.default(res, 200, 'OK', fileContent, path_1.extname(fileName));
     }
     catch (e) {
-        sendChunck_1.default(res, 'error', 'error.html');
+        throw new NotFoudError('File Not Found');
     }
-}))
-    .set('/api/minify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const requestBody = yield getRequestBody_1.default(req);
-    const example = { ext: '', code: '' };
-    const file = parseData_1.default(requestBody, example);
-    sendChunck_1.default(res, minifyCode_1.default(file.code, file.ext));
 }));
 function handleGet(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
@@ -68,11 +60,11 @@ function handleGet(req, res) {
         const cashedFile = cash_1.default.get(path_1.join(STATIC_PATH, url));
         const urlHandler = routing.getHandler(url);
         if (urlHandler)
-            urlHandler(req, res);
+            yield urlHandler(req, res);
         else if (cashedFile)
-            sendChunck_1.default(res, cashedFile, url);
+            sendResponse_1.default(res, 200, 'ok', cashedFile, path_1.extname(url).substring(1));
         else
-            sendChunck_1.default(res, 'error', 'error.html');
+            throw new NotFoudError('Page Not Found');
     });
 }
 exports.default = handleGet;

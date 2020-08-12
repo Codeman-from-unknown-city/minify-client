@@ -1,17 +1,12 @@
 import { IncomingMessage } from "http";
-import checkedIncomingMessage from "../../../IncomingMessage";
+import checkedIncomingMessage from "../../checkedIncomingMessage";
 
 export default async function getRequestBody(req: checkedIncomingMessage | IncomingMessage): Promise<string> {
-    return new Promise(resolve => {
+   return new Promise(resolve => {
+      let body: Buffer[] = [];
 
-          let body: Buffer[] = [];
-
-          req
-             .on('data', (chunk: Buffer): void => {
-                  body.push(chunk);
-             })
-             .on('end', (): void => {
-                resolve(Buffer.concat(body).toString())
-             });
-    });
+      req
+         .on('data', (chunk: Buffer): number => body.push(chunk))
+         .on('end', (): void => resolve( Buffer.concat(body).toString() ));
+   });
 }

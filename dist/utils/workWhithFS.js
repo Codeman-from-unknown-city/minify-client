@@ -24,11 +24,14 @@ const saveFile = (userId, file) => __awaiter(void 0, void 0, void 0, function* (
         yield fs_1.promises.mkdir(pathToUserDir);
     }
     catch (e) { }
-    finally {
-        yield fs_1.promises.writeFile(filePath, minifyCode_1.default(code, ext));
-    }
+    yield fs_1.promises.writeFile(filePath, minifyCode_1.default(code, ext));
 });
 exports.saveFile = saveFile;
 const getPathToUserDir = (userId) => path_1.join(process.cwd(), 'users_files', userId);
-const deleteUserDir = (userId) => __awaiter(void 0, void 0, void 0, function* () { return yield fs_1.promises.rmdir(getPathToUserDir(userId), { recursive: true }); });
+const deleteUserDir = (userId) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        yield fs_1.promises.rmdir(getPathToUserDir(userId), { recursive: true });
+    }
+    catch (e) { }
+});
 exports.deleteUserDir = deleteUserDir;

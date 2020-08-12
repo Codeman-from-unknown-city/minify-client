@@ -7,9 +7,4 @@ namespace I {
     export interface File extends Data {
         name: string
     }
-
-    export interface Config {
-        host: string
-        port: string
-    }
 }

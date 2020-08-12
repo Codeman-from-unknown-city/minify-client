@@ -1,4 +1,4 @@
-export const sumIp = (ip: string): string => {
+export default (ip: string): string => {
     const isIPv6 = ip.includes(':');
 
     if (isIPv6) return ip

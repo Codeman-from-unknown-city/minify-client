@@ -10,14 +10,16 @@ const saveFile = async (userId: string, file: I.File): Promise<void> => {
     try {
         await fsPromises.mkdir(pathToUserDir);
     } catch(e) {} 
-    finally {
-        await fsPromises.writeFile(filePath, minify(code, ext));
-    }
+    
+    await fsPromises.writeFile(filePath, minify(code, ext));
 }
 
 const getPathToUserDir = (userId: string): string => join(process.cwd(), 'users_files', userId);
 
-const deleteUserDir = async (userId: string): Promise<void> => 
-    await fsPromises.rmdir(getPathToUserDir(userId), {recursive: true});
+const deleteUserDir = async (userId: string): Promise<void> => {
+    try {
+        await fsPromises.rmdir(getPathToUserDir(userId), {recursive: true});
+    } catch(e) {}
+}
 
 export { saveFile, deleteUserDir };

@@ -14,12 +14,8 @@ function getRequestBody(req) {
         return new Promise(resolve => {
             let body = [];
             req
-                .on('data', (chunk) => {
-                body.push(chunk);
-            })
-                .on('end', () => {
-                resolve(Buffer.concat(body).toString());
-            });
+                .on('data', (chunk) => body.push(chunk))
+                .on('end', () => resolve(Buffer.concat(body).toString()));
         });
     });
 }
