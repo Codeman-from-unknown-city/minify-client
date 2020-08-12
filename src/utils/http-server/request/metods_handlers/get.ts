@@ -1,15 +1,15 @@
 import { ServerResponse } from "http";
 import { join } from "path";
-import { notBindedSendError } from "../sendError";
-import cash from "../../cash";
-import sendChunck from "../sendChunck";
-import { Routing, IRoutingHandler } from "../routing";
-import { sumIp } from "../sumIp";
+import { notBindedSendError } from "../../sendError";
+import cash from "../../../cash";
+import sendChunck from "../../sendChunck";
+import { Routing, IRoutingHandler } from "../../routing";
+import { sumIp } from "../../sumIp";
 import toProcessData from "../handle_data/handleData";
-import minify from "../../minifyCode";
+import minify from "../../../minifyCode";
 import { promises as fsPromises } from "fs";
 import awaitData from "../awaitData";
-import checkedIncomingMessage from "../../../IncomingMessage";
+import checkedIncomingMessage from "../../../../IncomingMessage";
 
 const WORK_DIR = process.cwd();
 const STATIC_PATH: string = join(WORK_DIR, 'static');

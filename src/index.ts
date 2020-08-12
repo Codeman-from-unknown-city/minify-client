@@ -1,9 +1,9 @@
 import { createServer, IncomingMessage, ServerResponse } from "http";
 import cash from "./utils/cash";
 import { join } from "path"
-import handleGet from "./utils/http-server/metods_handlers/get";
-import handlePut from "./utils/http-server/metods_handlers/put";
-import handlePost from "./utils/http-server/metods_handlers/post";
+import handleGet from "./utils/http-server/request/metods_handlers/get";
+import handlePut from "./utils/http-server/request/metods_handlers/put";
+import handlePost from "./utils/http-server/request/metods_handlers/post";
 import checkedIncomingMessage from "./IncomingMessage";
 
 cash.addDirectory( join(process.cwd(), 'static') );

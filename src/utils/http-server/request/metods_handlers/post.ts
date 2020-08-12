@@ -1,7 +1,7 @@
 import { ServerResponse } from "http";
-import { deleteUserDir } from "../../workWhithFS";
-import { sumIp } from "../sumIp";
-import checkedIncomingMessage from "../../../IncomingMessage";
+import { deleteUserDir } from "../../../workWhithFS";
+import { sumIp } from "../../sumIp";
+import checkedIncomingMessage from "../../../../IncomingMessage";
 
 export default async function handlePost(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const ip: string | undefined = req.socket.remoteAddress;

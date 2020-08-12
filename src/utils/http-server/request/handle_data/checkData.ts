@@ -1,4 +1,4 @@
-/// <reference path="../../interfaces.ts" />
+/// <reference path="../../../interfaces.ts" />
 
 function isJSON(str: string): boolean | I.Data {
     try {

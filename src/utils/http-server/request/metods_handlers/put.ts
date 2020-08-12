@@ -1,14 +1,14 @@
-/// <reference path="../../interfaces.ts" />
+/// <reference path="../../../interfaces.ts" />
 
 import { ServerResponse } from "http";
-import { notBindedSendError } from "../sendError";
+import { notBindedSendError } from "../../sendError";
 import toProcessData from "../handle_data/handleData";
 import { join } from "path";
-import sendChunck from "../sendChunck";
-import { saveFile } from "../../workWhithFS";
-import { sumIp } from "../sumIp";
-import awaitData from "./../awaitData";
-import checkedIncomingMessage from "../../../IncomingMessage";
+import sendChunck from "../../sendChunck";
+import { saveFile } from "../../../workWhithFS";
+import { sumIp } from "../../sumIp";
+import awaitData from "../awaitData";
+import checkedIncomingMessage from "../../../../IncomingMessage";
 
 export default async function handlePut(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const sendError = notBindedSendError.bind(null, res);
