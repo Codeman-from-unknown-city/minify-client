@@ -6,8 +6,8 @@ import sendChunck from "../../sendChunck";
 import { saveFile } from "../../../workWhithFS";
 import { sumIp } from "../../sumIp";
 import checkedIncomingMessage from "../../../IncomingMessage";
-import getRequestBody from "../getRequestBody";
-import parseRequestBody from "../parseData";
+import getRequestBody from "../data/getRequestBody";
+import parseRequestBody from "../data/parseData";
 
 export default async function handlePut(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const requestBody: string = await getRequestBody(req);

@@ -8,8 +8,8 @@ import { sumIp } from "../../sumIp";
 import minify from "../../../minifyCode";
 import { promises as fsPromises } from "fs";
 import checkedIncomingMessage from "../../../IncomingMessage";
-import getRequestBody from "../getRequestBody";
-import parseRequestBody from "../parseData";
+import getRequestBody from "../data/getRequestBody";
+import parseRequestBody from "../data/parseData";
 
 const WORK_DIR = process.cwd();
 const STATIC_PATH: string = join(WORK_DIR, 'static');

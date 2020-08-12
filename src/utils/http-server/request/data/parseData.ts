@@ -1,4 +1,4 @@
-import KnownError from "../../knownError";
+import KnownError from "../../../knownError";
 
 class ValidationError extends KnownError {
     constructor(message: string) {

@@ -16,8 +16,8 @@ const path_1 = require("path");
 const sendChunck_1 = __importDefault(require("../../sendChunck"));
 const workWhithFS_1 = require("../../../workWhithFS");
 const sumIp_1 = require("../../sumIp");
-const getRequestBody_1 = __importDefault(require("../getRequestBody"));
-const parseData_1 = __importDefault(require("../parseData"));
+const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
+const parseData_1 = __importDefault(require("../data/parseData"));
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const requestBody = yield getRequestBody_1.default(req);
