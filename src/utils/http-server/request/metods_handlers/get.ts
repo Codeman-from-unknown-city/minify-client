@@ -5,12 +5,11 @@ import cash from "../../../cash";
 import sendChunck from "../../sendChunck";
 import { Routing, IRoutingHandler } from "../../routing";
 import { sumIp } from "../../sumIp";
-import toProcessData from "../handle_data/handleData";
 import minify from "../../../minifyCode";
 import { promises as fsPromises } from "fs";
-import awaitData from "../getRequestBody";
-import checkedIncomingMessage from "../../../../IncomingMessage";
+import checkedIncomingMessage from "../../../IncomingMessage";
 import getRequestBody from "../getRequestBody";
+import parseRequestBody from "../parseData";
 
 const WORK_DIR = process.cwd();
 const STATIC_PATH: string = join(WORK_DIR, 'static');
@@ -54,18 +53,11 @@ routing
 })
 .set('/api/minify', async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> =>  {
     const requestBody: string = await getRequestBody(req);
-    const sendError = notBindedSendError.bind(null, res);
-    let file: I.Data;
-
-    try {
-        file = toProcessData(requestBody);
-    } catch(e) {
-        sendError(400, e.message);
-        return;
-    }
+    const example: I.Data = {name: '', ext: '', code: ''};
+    const file = parseRequestBody(requestBody, example);
 
     sendChunck(res, minify(file.code, file.ext))
-})
+});
 
 export default async function handleGet(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const { url } = req;

@@ -4,14 +4,14 @@ import { join } from "path"
 import handleGet from "./utils/http-server/request/metods_handlers/get";
 import handlePut from "./utils/http-server/request/metods_handlers/put";
 import handlePost from "./utils/http-server/request/metods_handlers/post";
-import checkedIncomingMessage from "./IncomingMessage";
+import checkedIncomingMessage from "./utils/IncomingMessage";
 
 cash.addDirectory( join(process.cwd(), 'static') );
 
 createServer((req: IncomingMessage, res: ServerResponse): void => {
     const { method, url } = req;
 
-    if (!url && !req.socket.remoteAddress)
+    if (!url && !req.socket.remoteAddress) return;
     
     switch(method) {
         case 'GET':

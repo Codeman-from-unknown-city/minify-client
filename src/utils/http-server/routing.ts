@@ -1,5 +1,5 @@
 import { ServerResponse } from "http";
-import checkedIncomingMessage from "../../IncomingMessage";
+import checkedIncomingMessage from "../IncomingMessage";
 
 interface IRoutingHandler {
     (req: checkedIncomingMessage, res: ServerResponse): void;

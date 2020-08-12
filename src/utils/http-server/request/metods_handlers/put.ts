@@ -7,7 +7,7 @@ import { join } from "path";
 import sendChunck from "../../sendChunck";
 import { saveFile } from "../../../workWhithFS";
 import { sumIp } from "../../sumIp";
-import checkedIncomingMessage from "../../../../IncomingMessage";
+import checkedIncomingMessage from "../../../IncomingMessage";
 import getRequestBody from "../getRequestBody";
 
 export default async function handlePut(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
