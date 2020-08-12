@@ -8,8 +8,9 @@ import { sumIp } from "../../sumIp";
 import toProcessData from "../handle_data/handleData";
 import minify from "../../../minifyCode";
 import { promises as fsPromises } from "fs";
-import awaitData from "../awaitData";
+import awaitData from "../getRequestBody";
 import checkedIncomingMessage from "../../../../IncomingMessage";
+import getRequestBody from "../getRequestBody";
 
 const WORK_DIR = process.cwd();
 const STATIC_PATH: string = join(WORK_DIR, 'static');
@@ -51,25 +52,20 @@ routing
         sendChunck(res, 'error', 'error.html');
     }
 })
-.set('/api/minify', (req: checkedIncomingMessage, res: ServerResponse): void => 
-        awaitData(req, 
-            (err: Error | null, data: string): void => {
-                if (err) throw err;
+.set('/api/minify', async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> =>  {
+    const requestBody: string = await getRequestBody(req);
+    const sendError = notBindedSendError.bind(null, res);
+    let file: I.Data;
 
-                const sendError = notBindedSendError.bind(null, res);
-                let file: I.Data;
+    try {
+        file = toProcessData(requestBody);
+    } catch(e) {
+        sendError(400, e.message);
+        return;
+    }
 
-                try {
-                    file = toProcessData(data);
-                } catch(e) {
-                    sendError(400, e.message);
-                    return;
-                }
-
-                sendChunck(res, minify(file.code, file.ext))
-            }        
-        )
-);
+    sendChunck(res, minify(file.code, file.ext))
+})
 
 export default async function handleGet(req: checkedIncomingMessage, res: ServerResponse): Promise<void> {
     const { url } = req;

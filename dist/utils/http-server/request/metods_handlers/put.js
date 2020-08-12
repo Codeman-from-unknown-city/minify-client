@@ -18,29 +18,26 @@ const path_1 = require("path");
 const sendChunck_1 = __importDefault(require("../../sendChunck"));
 const workWhithFS_1 = require("../../../workWhithFS");
 const sumIp_1 = require("../../sumIp");
-const awaitData_1 = __importDefault(require("../awaitData"));
+const getRequestBody_1 = __importDefault(require("../getRequestBody"));
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const sendError = sendError_1.notBindedSendError.bind(null, res);
-        awaitData_1.default(req, (err, data) => __awaiter(this, void 0, void 0, function* () {
-            if (err)
-                throw err;
-            let file;
-            try {
-                file = handleData_1.default(data);
-                if (!file.name)
-                    throw new Error;
-            }
-            catch (e) {
-                sendError(400, e.message);
-                return;
-            }
-            const ip = req.socket.remoteAddress;
-            const userId = sumIp_1.sumIp(ip);
-            yield workWhithFS_1.saveFile(userId, file);
-            const fileName = file.name;
-            sendChunck_1.default(res, `<a download href="${path_1.join('users_files', fileName)}">${fileName}</a>`);
-        }));
+        const requestBody = yield getRequestBody_1.default(req);
+        let file;
+        try {
+            file = handleData_1.default(requestBody);
+            if (!file.name)
+                throw new Error();
+        }
+        catch (e) {
+            sendError(400, e.message);
+            return;
+        }
+        const ip = req.socket.remoteAddress;
+        const userId = sumIp_1.sumIp(ip);
+        yield workWhithFS_1.saveFile(userId, file);
+        const fileName = file.name;
+        sendChunck_1.default(res, `<a download href="${path_1.join('users_files', fileName)}">${fileName}</a>`);
     });
 }
 exports.default = handlePut;
