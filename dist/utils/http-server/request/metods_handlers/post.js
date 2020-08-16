@@ -19,7 +19,7 @@ const knownError_1 = __importDefault(require("../../../knownError"));
 const routing_1 = require("../../routing");
 const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
 const minifyCode_1 = __importDefault(require("../../../minifyCode"));
-const parseData_1 = __importDefault(require("../data/parseData"));
+const parseRequestBody_1 = require("../data/parseRequestBody");
 class BadUrlError extends knownError_1.default {
     constructor() {
         super('Unsupported URL', 400);
@@ -34,8 +34,8 @@ const routing = new routing_1.Routing()
 }))
     .set('/api/minify', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const requestBody = yield getRequestBody_1.default(req);
-    const example = { ext: '', code: '' };
-    const data = parseData_1.default(requestBody, example);
+    const objInterface = { ext: '', code: '' };
+    const data = parseRequestBody_1.parseJSON(requestBody, objInterface);
     const { ext } = data;
     sendResponse_1.default(res, 200, 'OK', minifyCode_1.default(data.code, ext), ext);
 }));

@@ -16,13 +16,13 @@ const path_1 = require("path");
 const workWhithFS_1 = require("../../../workWhithFS");
 const sumIp_1 = __importDefault(require("../../sumIp"));
 const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
-const parseData_1 = __importDefault(require("../data/parseData"));
+const parseRequestBody_1 = require("../data/parseRequestBody");
 const sendResponse_1 = __importDefault(require("../../sendResponse"));
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const requestBody = yield getRequestBody_1.default(req);
-        const expample = { name: '', ext: '', code: '' };
-        const file = parseData_1.default(requestBody, expample);
+        const objInterface = { name: '', ext: '', code: '' };
+        const file = parseRequestBody_1.parseJSON(requestBody, objInterface);
         const ip = req.socket.remoteAddress;
         const userId = sumIp_1.default(ip);
         yield workWhithFS_1.saveFile(userId, file);

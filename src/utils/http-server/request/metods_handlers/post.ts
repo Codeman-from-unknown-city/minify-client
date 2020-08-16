@@ -7,7 +7,7 @@ import KnownError from "../../../knownError";
 import { IRoutingHandler, Routing } from "../../routing";
 import getRequestBody from "../data/getRequestBody";
 import minify from "../../../minifyCode";
-import parseRequestBody from "../data/parseData";
+import { parseJSON } from "../data/parseRequestBody";
 
 class BadUrlError extends KnownError {
     constructor() {
@@ -26,8 +26,8 @@ const routing: Routing = new Routing()
 })
 .set('/api/minify', async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> =>  {
     const requestBody: string = await getRequestBody(req);
-    const example: I.Data = {ext: '', code: ''};
-    const data: I.Data = parseRequestBody(requestBody, example);
+    const objInterface: I.Data = {ext: '', code: ''};
+    const data: I.Data = parseJSON(requestBody, objInterface);
     const { ext } = data;
 
     sendResponse(res, 200, 'OK', minify(data.code, ext), ext);

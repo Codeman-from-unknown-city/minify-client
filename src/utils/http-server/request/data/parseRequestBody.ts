@@ -15,7 +15,7 @@ class PropertyError extends ValidationError {
 
 const isNativeObj = (obj: {[index: string]: any}): boolean => Object.prototype.toString.call(obj) === '[object Object]';
 
-export default function parseRequestBody<T>(body: string, example: T): T {
+export function parseJSON<T>(body: string, objInterface: T): T {
     let data: {[index: string]: any}; 
 
     try {
@@ -26,9 +26,9 @@ export default function parseRequestBody<T>(body: string, example: T): T {
 
     if ( !isNativeObj(data) ) throw new ValidationError('Data should be obj');
 
-    for (let prop in example) {
+    for (let prop in objInterface) {
         if (!data[prop]) throw new PropertyError('Missing property', prop);
-        if (typeof data[prop] !== typeof example[prop]) throw new PropertyError('Invalid type of property', prop)
+        if (typeof data[prop] !== typeof objInterface[prop]) throw new PropertyError('Invalid type of property', prop)
     }
 
     return <T>data;
