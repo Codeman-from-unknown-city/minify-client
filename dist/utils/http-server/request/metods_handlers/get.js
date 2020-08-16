@@ -39,7 +39,7 @@ const routing = new routing_1.Routing()
         throw new PrepareError();
     sendResponse_1.default(res, 200, 'OK', index, 'html');
 }))
-    .set(/\/users_files\/*/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    .set(/\/users_files\/.+/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { url, socket } = req;
         const ip = socket.remoteAddress;
@@ -48,9 +48,10 @@ const routing = new routing_1.Routing()
         const userId = sumIp_1.default(ip);
         const filePath = path_1.join(WORK_DIR, 'users_files', userId, fileName);
         const fileContent = yield fs_1.promises.readFile(filePath);
-        sendResponse_1.default(res, 200, 'OK', fileContent, path_1.extname(fileName));
+        sendResponse_1.default(res, 200, 'OK', fileContent, path_1.extname(fileName).substring(1));
     }
     catch (e) {
+        console.log(e);
         throw new NotFoudError('File Not Found');
     }
 }));

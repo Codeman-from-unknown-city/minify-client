@@ -32,7 +32,7 @@ const routing: Routing = new Routing()
     
     sendResponse(res, 200, 'OK', index, 'html');
 })
-.set(/\/users_files\/*/, async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> => {
+.set(/\/users_files\/.+/, async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> => {
     try {
         const { url, socket } = req;    
         const ip: string | undefined = socket.remoteAddress;
@@ -42,8 +42,10 @@ const routing: Routing = new Routing()
         const filePath: string = join(WORK_DIR, 'users_files', userId, fileName);
         const fileContent: Buffer = await fsPromises.readFile(filePath);
 
-        sendResponse(res, 200, 'OK', fileContent, extname(fileName));
+        sendResponse(res, 200, 'OK', fileContent, extname(fileName).substring(1));
     } catch(e) {
+        console.log(e);
+        
         throw new NotFoudError('File Not Found');
     }
 });
