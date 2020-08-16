@@ -6,16 +6,12 @@ interface IRoutingHandler {
 }
 
 class Routing extends Map<string | RegExp, IRoutingHandler> {
-    getHandler(url: string): IRoutingHandler | undefined {
-        const ROOT_PATH = '/';
-
-        if (url === ROOT_PATH) return super.get(ROOT_PATH);
-
-        for (let key of super.keys()) {
-            if (key === ROOT_PATH) continue;
-            if (url.match(key)) return super.get(key);
-        }
-    }
+    getHandler = (
+        url: string,
+        result: string | RegExp | undefined = url === '/' ? 
+        '/' : 
+        Array.from(super.keys()).find(path => path !== '/' && url.match(path))
+    ): IRoutingHandler | undefined => result ? super.get(result) : undefined;
 }
 
 export { IRoutingHandler , Routing }
