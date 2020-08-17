@@ -24,16 +24,7 @@
     }
 
     // DELETE ALL FILES OF THIS USER ON SERVER
-    async function deleteUserFiles() {
-        await fetch(
-            '/',
-            {
-                method: 'POST',
-                headers: {"Content-Type": "text/plain"},
-                data: 'Delete data'
-            }
-        );
-    }
+    const deleteUserFiles = async () => await fetch('/delete_user_dir', { method: 'POST' });
     
     // ADD FILE LOGIC
     function createFileInput() {
@@ -97,7 +88,7 @@
 
     // SEND FILES LOGIC
     async function sendLogic() {
-        const files= document.querySelectorAll('.input-file');
+        const files = document.querySelectorAll('.input-file');
         const codeFromTextInput = CODE_INPUT.value;
         const checkbox = document.querySelector('input[type="radio"]:checked');
         const extOfcodeFromTextInput = checkbox ? checkbox.value : undefined;
@@ -109,14 +100,10 @@
             linksToFiles: [],
         };
 
-        if (codeFromTextInput && extOfcodeFromTextInput) result.outputText = await sendData(
-                'POST',
-                'application/json',
-                JSON.stringify({
-                    code: codeFromTextInput,
-                    ext: extOfcodeFromTextInput
-                })
-            );
+        if (codeFromTextInput && extOfcodeFromTextInput) {
+            const response = await sendJSONdata('/api/minify', 'POST', {code: codeFromTextInput, ext: extOfcodeFromTextInput});
+            result.outputText = await response.text();
+        }
     
         if (files[1]) for (let i = 1; i < files.length; i++) result.linksToFiles.push(await sendFile(files[i]));
 
@@ -141,22 +128,21 @@
         const partsOfName = file.name.split('.');
         const ext = partsOfName[partsOfName.length - 1];
         const code = await file.text();  
-        
-        return await sendData('PUT', {name: file.name, code, ext});
+        const response = await sendJSONdata('/', 'PUT', {name: file.name, code, ext});
+
+        return response.headers.get('Location');
     }
 
-    async function sendData(method, data) {
+    async function sendJSONdata(path, method, data) {
         try {
-            const response = await fetch(
-                '/', 
+            return await fetch(
+                path, 
                 {
                     method: method,
                     headers:{'Content-Type': 'application/json'},
                     body: JSON.stringify(data),
                 }
             );
-
-            return await response.text();
         } catch(e){
             return 'Sorry, there was an error on the server, please try again later';
         }        
@@ -172,7 +158,12 @@
             const outputTitle = createNode('h3', null, 'Output Files:');
             const listOfOutputFiles = createNode('ul', 'output-files');
 
-            linksToFiles.forEach(linkHTML => listOfOutputFiles.append(createNode('li', null, linkHTML)));
+            linksToFiles.forEach(href => {
+                const partsOfUrl = href.split('/');
+                const fileName = partsOfUrl[partsOfUrl.length - 1];
+                listOfOutputFiles.insertAdjacentHTML('beforeend', `<li><a href="${href}" download>${fileName}</a></li>`);
+            });
+
             multiAppend(OUTPUT, outputTitle, listOfOutputFiles);
         }
         
