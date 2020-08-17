@@ -9,11 +9,7 @@ const minifyCss = (code: string): string => code
     .replace(/(\w)\s+([{>])/g, '$1$2')
     .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
 
-function minifyJs(code: string): string {
-    const result = uglifyMinify(code).code;
-    
-    return result ? result : 'Sorry, this minifier does not support your code';
-}
+const minifyJs = (code: string, result: string | undefined = uglifyMinify(code).code): string => result ? result : code;
 
 function minifyHtml(code: string): string {
     code = code

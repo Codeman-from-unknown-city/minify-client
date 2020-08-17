@@ -7,10 +7,7 @@ const minifyCss = (code) => code
     .replace(/(\W)\s+(.)/g, '$1$2')
     .replace(/(\w)\s+([{>])/g, '$1$2')
     .replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1');
-function minifyJs(code) {
-    const result = uglify_es_1.minify(code).code;
-    return result ? result : 'Sorry, this minifier does not support your code';
-}
+const minifyJs = (code, result = uglify_es_1.minify(code).code) => result ? result : code;
 function minifyHtml(code) {
     code = code
         .replace(/\s+/g, ' ')
