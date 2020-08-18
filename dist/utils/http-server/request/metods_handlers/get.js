@@ -15,10 +15,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const cash_1 = __importDefault(require("../../../cash"));
 const routing_1 = require("../../routing");
-const sumIp_1 = __importDefault(require("../../sumIp"));
 const fs_1 = require("fs");
 const sendResponse_1 = __importDefault(require("../../sendResponse"));
 const knownError_1 = __importDefault(require("../../../knownError"));
+const parseCookie_1 = require("../../parseCookie");
+const users_1 = require("../../users");
 class NotFoudError extends knownError_1.default {
     constructor(message) {
         super(message, 404);
@@ -35,17 +36,23 @@ const routing = new routing_1.Routing()
     .set('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const indexPath = path_1.join(STATIC_PATH, 'index.html');
     const index = cash_1.default.get(indexPath);
+    const ip = req.socket.remoteAddress;
+    if (!users_1.users[ip]) {
+        new users_1.User(ip, res);
+    }
     if (!index)
         throw new PrepareError();
     sendResponse_1.default(res, 200, 'OK', index, 'html');
 }))
     .set(/\/users_files\/.+/, (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { url, socket } = req;
-        const ip = socket.remoteAddress;
-        const partsOfUrl = url.split('/');
+        const userId = parseCookie_1.parseCookie(req, 'id');
+        if (!userId) {
+            res.writeHead(400, 'Bad Request');
+            return;
+        }
+        const partsOfUrl = req.url.split('/');
         const fileName = partsOfUrl[partsOfUrl.length - 1];
-        const userId = sumIp_1.default(ip);
         const filePath = path_1.join(WORK_DIR, 'users_files', userId, fileName);
         const fileContent = yield fs_1.promises.readFile(filePath);
         sendResponse_1.default(res, 200, 'OK', fileContent, path_1.extname(fileName).substring(1));

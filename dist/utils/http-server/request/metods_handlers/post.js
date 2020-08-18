@@ -13,13 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const workWhithFS_1 = require("../../../workWhithFS");
-const sumIp_1 = __importDefault(require("../../sumIp"));
 const sendResponse_1 = __importDefault(require("../../sendResponse"));
 const knownError_1 = __importDefault(require("../../../knownError"));
 const routing_1 = require("../../routing");
 const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
 const minifyCode_1 = __importDefault(require("../../../minifyCode"));
 const parseRequestBody_1 = require("../data/parseRequestBody");
+const parseCookie_1 = require("../../parseCookie");
 class BadUrlError extends knownError_1.default {
     constructor() {
         super('Unsupported URL', 400);
@@ -27,8 +27,11 @@ class BadUrlError extends knownError_1.default {
 }
 const routing = new routing_1.Routing()
     .set('/delete_user_dir', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const ip = req.socket.remoteAddress;
-    const userId = sumIp_1.default(ip);
+    const userId = parseCookie_1.parseCookie(req, 'id');
+    if (!userId) {
+        res.writeHead(400, 'Bad Request');
+        return;
+    }
     yield workWhithFS_1.deleteUserDir(userId);
     sendResponse_1.default(res, 200, 'ok');
 }))

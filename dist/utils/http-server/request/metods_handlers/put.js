@@ -14,17 +14,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const path_1 = require("path");
 const workWhithFS_1 = require("../../../workWhithFS");
-const sumIp_1 = __importDefault(require("../../sumIp"));
 const getRequestBody_1 = __importDefault(require("../data/getRequestBody"));
 const parseRequestBody_1 = require("../data/parseRequestBody");
 const sendResponse_1 = __importDefault(require("../../sendResponse"));
+const parseCookie_1 = require("../../parseCookie");
 function handlePut(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
+        const userId = parseCookie_1.parseCookie(req, 'id');
+        if (!userId) {
+            res.writeHead(400, 'Bad Request');
+            return;
+        }
         const requestBody = yield getRequestBody_1.default(req);
         const objInterface = { name: '', ext: '', code: '' };
         const file = parseRequestBody_1.parseJSON(requestBody, objInterface);
-        const ip = req.socket.remoteAddress;
-        const userId = sumIp_1.default(ip);
         yield workWhithFS_1.saveFile(userId, file);
         const fileName = file.name;
         sendResponse_1.default(res, 201, 'Created');

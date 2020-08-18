@@ -1,6 +1,5 @@
 import { ServerResponse } from "http";
 import { deleteUserDir } from "../../../workWhithFS";
-import  sumIp  from "../../sumIp";
 import checkedIncomingMessage from "../../checkedIncomingMessage";
 import sendResponse from "../../sendResponse";
 import KnownError from "../../../knownError";
@@ -8,6 +7,7 @@ import { IRoutingHandler, Routing } from "../../routing";
 import getRequestBody from "../data/getRequestBody";
 import minify from "../../../minifyCode";
 import { parseJSON } from "../data/parseRequestBody";
+import { parseCookie } from "../../parseCookie";
 
 class BadUrlError extends KnownError {
     constructor() {
@@ -17,8 +17,11 @@ class BadUrlError extends KnownError {
 
 const routing: Routing = new Routing()
 .set('/delete_user_dir', async (req: checkedIncomingMessage, res: ServerResponse): Promise<void> => {
-    const ip: string | undefined = req.socket.remoteAddress;
-    const userId: string = sumIp(ip);
+    const userId: string | undefined = parseCookie(req, 'id');
+    if (!userId) {
+        res.writeHead(400, 'Bad Request');
+        return;
+    }
 
     await deleteUserDir(userId);
     
